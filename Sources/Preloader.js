@@ -1,0 +1,207 @@
+/**
+ * Created by Administrator on 2014/5/6.
+ */
+var Preloader = cc.Layer.extend({
+    ctor: function (onLoadOverCallback) {
+        this._super();
+        this.onLoadOverCallback = onLoadOverCallback;
+        this.sprites = [];
+        this.mainLoadingStarted = false;
+        this.shownButton = false;
+        this.loadedMain = false;
+        this.hasBrandLogo = false;
+        this.hasMoreGames = false;
+        Preloader.instance = this;
+        this.barSize = cc.size(1, 1);
+        this.loadResArr = [];
+        this.loadTotalLen = 0;
+        this.loadedCount = 0;
+        this.init();
+    }
+});
+
+Preloader.prototype.onTouchesEnded = function (touches, event) {
+    if (touches.length > 0) {
+        var touch = touches[0];
+        var pos = touch.getLocation();
+        this.onDown(pos.x, pos.y);
+    }
+}
+
+Preloader.prototype.init = function () {
+    if (this.mainLoadingStarted)return;
+    this.mainLoadingStarted = true;
+
+    this.setTouchEnabled(true);
+
+    var sp = createBitmap("preloader_back");
+    sp.setPosition(cc.p(App.WIN_W / 2, App.WIN_H / 2));
+    this.addChild(sp);
+    this.sprites.push(sp);
+    var barTop = createBitmap("progress_bar_top");
+    this.addChild(barTop);
+    barTop.setPosition(cc.p(0, 322));
+    barTop.setAnchorPoint(cc.p(0, 0));
+    this.barSize = barTop.getContentSize();
+    this.bar = barTop;
+    this.sprites.push(barTop);
+    var playBtn = createBitmap("play");
+    this.addChild(playBtn);
+    playBtn.setAnchorPoint(cc.p(78 / 241, 0.5));
+    playBtn.setPosition(cc.p(430, 465));
+    this.playButton = playBtn;
+    this.playButton.setOpacity(0);
+    this.sprites.push(playBtn);
+    var index = App.episode;
+    var basePath = App.episode <= 1 ? "assets/tutorial/" : "assets/tutorial/episode2/";
+    this.loadResArr = [
+        {src: "assets/preloader/zibbo_logo.png", type: Preloader.TYPE_TEXTURE},
+        {src: ["assets/map/map1.jpg", "assets/map/map_ep1_3.png", "assets/map/map_ep2_3.png"][index], type: Preloader.TYPE_TEXTURE, id: "map3"},
+        {src: ["assets/map/map2.jpg", "assets/map/map_ep1_2.png", "assets/map/map_ep2_2.png"][index], type: Preloader.TYPE_TEXTURE, id: "map2"},
+        {src: ["assets/map/map3.jpg", "assets/map/map_ep1_1.png", "assets/map/map_ep2_1.png"][index], type: Preloader.TYPE_TEXTURE, id: "map1"},
+        {src: "assets/bar.png", type: Preloader.TYPE_TEXTURE},
+        {src: "sprites/art.plist", type: Preloader.TYPE_PLIST},
+        {src: App.episode == 2 ? "assets/back2.png" : "assets/back1.png", type: Preloader.TYPE_TEXTURE, id: "back1"},
+        {src: App.episode != 2 ? "assets/main_menu_ep2.png" : "assets/main_menu.png", type: Preloader.TYPE_TEXTURE, id: "main_menu"},
+        {src: "assets/menu_back.png", type: Preloader.TYPE_TEXTURE},
+        {src: "assets/logo_top.png", type: Preloader.TYPE_TEXTURE},
+        {src: "assets/logo.txt", type: Preloader.TYPE_JSON},
+        {src: "assets/button.txt", type: Preloader.TYPE_JSON},
+        {src: "assets/Char_win.txt", type: Preloader.TYPE_JSON},
+        {src: "assets/Char_lose.txt", type: Preloader.TYPE_JSON},
+        {src: "assets/gloss_anim.txt", type: Preloader.TYPE_JSON},
+        {src: "assets/buttons_pause_anim.txt", type: Preloader.TYPE_JSON},
+        {src: "assets/pointer.txt", type: Preloader.TYPE_JSON},
+        {src: basePath + "t1.png", type: Preloader.TYPE_TEXTURE, id: "tutorial1"},
+        {src: basePath + "t2.png", type: Preloader.TYPE_TEXTURE, id: "tutorial2"},
+        {src: basePath + "t3.png", type: Preloader.TYPE_TEXTURE, id: "tutorial3"},
+        {src: basePath + "t4.png", type: Preloader.TYPE_TEXTURE, id: "tutorial4"},
+        {src: basePath + "t5.png", type: Preloader.TYPE_TEXTURE, id: "tutorial5"},
+        {src: basePath + "t6.png", type: Preloader.TYPE_TEXTURE, id: "tutorial6"},
+        {src: basePath + "t7.png", type: Preloader.TYPE_TEXTURE, id: "tutorial7"},
+        {src: "assets/sound/btcl_main_music", type: Preloader.TYPE_SOUND},
+        {src: "assets/sound/hero_show", type: Preloader.TYPE_AUDIO},
+        {src: "assets/sound/hero_hide", type: Preloader.TYPE_AUDIO},
+        {src: "assets/sound/win", type: Preloader.TYPE_AUDIO},
+        {src: "assets/sound/fail", type: Preloader.TYPE_AUDIO},
+        {src: "assets/sound/play_button", type: Preloader.TYPE_AUDIO},
+        {src: "assets/sound/button", type: Preloader.TYPE_AUDIO},
+        {src: "assets/sound/pause", type: Preloader.TYPE_AUDIO},
+        {src: "assets/sound/transition", type: Preloader.TYPE_AUDIO},
+        {src: "assets/sound/remove1", type: Preloader.TYPE_AUDIO},
+        {src: "assets/sound/remove2", type: Preloader.TYPE_AUDIO},
+        {src: "assets/sound/remove3", type: Preloader.TYPE_AUDIO},
+        {src: "assets/sound/remove4", type: Preloader.TYPE_AUDIO},
+        {src: "assets/sound/bonus_show", type: Preloader.TYPE_AUDIO},
+        {src: "assets/sound/bonus_set", type: Preloader.TYPE_AUDIO},
+        {src: "assets/sound/bonus_bomb", type: Preloader.TYPE_AUDIO},
+        {src: "assets/sound/bonus_line", type: Preloader.TYPE_AUDIO},
+        {src: "assets/sound/bonus_color", type: Preloader.TYPE_AUDIO},
+        {src: "assets/sound/star1", type: Preloader.TYPE_AUDIO},
+        {src: "assets/sound/pointer", type: Preloader.TYPE_AUDIO},
+        {src: "assets/sound/star2", type: Preloader.TYPE_AUDIO},
+        {src: "assets/sound/star3", type: Preloader.TYPE_AUDIO},
+        {src: "assets/sound/cookie_crash", type: Preloader.TYPE_AUDIO},
+        {src: "assets/sound/choco_crash", type: Preloader.TYPE_AUDIO},
+        {src: "assets/sound/color_crash", type: Preloader.TYPE_AUDIO},
+        {src: "assets/sound/cake_down", type: Preloader.TYPE_AUDIO},
+        {src: "assets/sound/stop_move", type: Preloader.TYPE_AUDIO},
+        //字体的
+        {src: "fonts/redFont.png", type: Preloader.TYPE_TEXTURE},
+        {src: "fonts/blueFont.png", type: Preloader.TYPE_TEXTURE}
+    ];
+
+    this.loadTotalLen = this.loadResArr.length;
+    this.loadedCount = 0;
+
+    this.load();
+
+};
+Preloader.prototype.load = function () {
+    if (this.loadResArr.length > 0) {
+        this.loadedCount++;
+        var resObj = this.loadResArr.splice(0, 1)[0];
+        var url = resObj.src;
+        var name = url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("."));
+        if (resObj.id) name = resObj.id;
+        switch (resObj.type) {
+            case Preloader.TYPE_TEXTURE:
+                cc.TextureCache.getInstance().addImage(url);
+                textureCacheKey[name] = url;
+                break;
+            case Preloader.TYPE_PLIST:
+                cc.SpriteFrameCache.getInstance().addSpriteFrames(url);
+                break;
+            case Preloader.TYPE_JSON:
+                cc.FileUtils.getInstance().getStringFromFile(url);
+                txtCacheKey[name] = url;
+                break;
+            case Preloader.TYPE_SOUND:
+                cc.AudioEngine.getInstance().preloadMusic(url);
+                bgSoundURL = url;
+                break;
+            case Preloader.TYPE_AUDIO:
+                cc.AudioEngine.getInstance().preloadEffect(url);
+                name = url.substring(url.lastIndexOf("/") + 1, url.length);
+                audioCacheKey[name] = url;
+                break;
+        }
+        this.onProgress();
+//        setTimeout(this.load, 1, this);
+        this.load();
+    } else {
+        this.onLoadComplete();
+    }
+}
+Preloader.prototype.onLoadComplete = function () {
+
+
+    this.animationManager = new AnimationManager();
+    this.animationManager.putAnimation("logo", JSON.parse(cc.FileUtils.getInstance().getStringFromFile(txtCacheKey["logo"])), 0);
+    this.animationManager.putAnimation("button", JSON.parse(cc.FileUtils.getInstance().getStringFromFile(txtCacheKey["button"])), 0);
+    this.animationManager.putAnimation("Char_win", JSON.parse(cc.FileUtils.getInstance().getStringFromFile(txtCacheKey["Char_win"])), 0);
+    this.animationManager.putAnimation("Char_lose", JSON.parse(cc.FileUtils.getInstance().getStringFromFile(txtCacheKey["Char_lose"])), 0);
+    this.animationManager.putAnimation("gloss_anim", JSON.parse(cc.FileUtils.getInstance().getStringFromFile(txtCacheKey["gloss_anim"])), 0);
+    this.animationManager.putAnimation("pointer", JSON.parse(cc.FileUtils.getInstance().getStringFromFile(txtCacheKey["pointer"])), 0);
+    this.animationManager.putAnimation("buttons_anim", JSON.parse(cc.FileUtils.getInstance().getStringFromFile(txtCacheKey["buttons_pause_anim"])), 0);
+
+    AnimManager.instance.init();
+
+
+
+    this.onProgress();
+    this.showButton();
+};
+Preloader.prototype.showButton = function () {
+    if (!this.shownButton) {
+        this.shownButton = true;
+        this.playButton.setScale(0.5);
+        this.playButton.runAction(cc.Sequence.create(
+            cc.Spawn.create(cc.FadeIn.create(0.15), cc.ScaleTo.create(0.15, 1.2)),
+            cc.ScaleTo.create(0.25, 1)
+        ));
+    }
+};
+Preloader.prototype.onDown = function (x, y) {
+    if (!this.loadedMain) {
+        var rect = this.playButton.getBoundingBox();
+        if (x >= rect.x && x <= rect.x + rect.width && y >= y && y <= rect.y + rect.height) {
+            this.loadedMain = true;
+            this.onLoadOverCallback();
+        }
+    }
+};
+
+Preloader.prototype.onProgress = function () {
+    var pre = this.loadedCount / this.loadTotalLen;
+    pre = limit(pre, 0, 1);
+    var rect = cc.rect(0, 0, limit(this.barSize.width * pre, 1, this.barSize.width), this.barSize.height);
+    this.bar.setTextureRect(rect);
+};
+
+Preloader.TYPE_TEXTURE = 1;
+Preloader.TYPE_PLIST = 2;
+Preloader.TYPE_AUDIO = 3;
+Preloader.TYPE_JSON = 4;
+Preloader.TYPE_SOUND = 5;
+
