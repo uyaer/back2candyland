@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Document
+        jsControlled="true"
+        jsController="MainLayer"
+        resolution="default"
+        >
+
+    <Resolutions>
+        <Resolution centeredOrigin="false" ext="iphone" height="960" width="640" name="default" scale="1"/>
+    </Resolutions>
+
+    <Animations>
+        <Animation autoPlay="true"
+                   id="0"
+                   name="Default Timeline"
+                   length="10"
+                   chainedId="0"
+                   offset="0.0"
+                   position="0.0"
+                   resolution="30"
+                   scale="128">
+            <CallbackChannel>
+            </CallbackChannel>
+            <SoundChannel>
+            </SoundChannel>
+        </Animation>
+
+    </Animations>
+    <Layer
+            positionX="0" positionY="0.0"
+            sizeType="Percent"
+            width="100" height="100"
+            anchorPointX="0.5" anchorPointY="0.5" ignoreAnchorPoint="true"
+            scaleX="1" scaleY="1"
+            >
+        <Node positionType="LeftBottom" positionX="0" positionY="0" anchorPointX="0"
+        anchorPointY="0" target="Doc" name="borderNode" var="borderNode" sizeType="Percent" width="100" height="100">
+            <Sprite
+                    positionX="-2.5" positionY="366.0" sizeType="Absolute"
+                    anchorPointX="0" anchorPointY="0.5" ignoreAnchorPoint="false"
+                    scaleX="1.0" scaleY="1.0"
+                    positionType="LeftBottom" src="sprites/art.plist/border_left.png" target="Doc" name="left"
+                    var="bleftSp">
+            </Sprite>
+            <Sprite
+                    positionX="606.0" positionY="366.0" sizeType="Absolute"
+                    anchorPointX="0" anchorPointY="0.5" ignoreAnchorPoint="false"
+                    scaleX="1.0" scaleY="1.0"
+                    positionType="LeftBottom" src="sprites/art.plist/border_right.png" target="Doc" name="right"
+                    var="brightSp">
+            </Sprite>
+            <Sprite
+                    positionX="-1" positionY="653.0" sizeType="Absolute"
+                    anchorPointX="0" anchorPointY="0" ignoreAnchorPoint="false"
+                    scaleX="1.0" scaleY="1.0"
+                    positionType="LeftBottom" src="sprites/art.plist/border_top.png" name="top" target="Doc" var="btopSp">
+            </Sprite>
+            <Sprite
+                    positionX="-1" positionY="15" sizeType="Absolute"
+                    anchorPointX="0" anchorPointY="0" ignoreAnchorPoint="false"
+                    scaleX="1.0" scaleY="1.0"
+                    positionType="LeftBottom" src="sprites/art.plist/border_down.png" name="down" target="Doc"
+                    var="bdownSp">
+            </Sprite>
+            <Node positionType="LeftBottom" positionX="0" positionY="0" anchorPointX="0"
+                  anchorPointY="0" name="hud" sizeType="Percent" width="100" height="100">
+                <Sprite positionType="LeftBottom" positionX="477.0" positionY="718.0" anchorPointX="0.5"
+                        anchorPointY="0.5" src="sprites/art.plist/progressbar_bpttom.png" name="bar_bg" scaleX="0.9"
+                        scaleY="0.9"/>
+                <Sprite positionType="LeftBottom" positionX="386.63635" positionY="734.1818" anchorPointX="0"
+                        anchorPointY="0.5" src="assets/bar.png" name="bar" var="bar" target="Doc" scaleX="0.9"
+                        scaleY="0.9"/>
+                <Sprite positionType="LeftBottom" positionX="99.0" positionY="720.0" anchorPointX="0.5"
+                        anchorPointY="0.5" name="moves_bg" src="sprites/art.plist/moves.png" scaleX="1" scaleY="1">
+                </Sprite>
+                <LabelBMFont positionType="LeftBottom" positionX="294.0" positionY="740.0" anchorPointX="0.5" anchorPointY="1"
+                             name="targetText" var="targetText" target="Doc" src="fonts/redFont.fnt" text="53"/>
+                <LabelBMFont positionType="LeftBottom" positionX="123.0" positionY="753.0" anchorPointX="0.5"
+                             anchorPointY="1" src="fonts/blueFont.fnt" text="28" scaleX="1" scaleY="1"
+                             name="movesText" target="Doc" var="movesText"/>
+                <LabelBMFont positionType="LeftBottom" positionX="481.0" positionY="720.0" anchorPointX="0.5" anchorPointY="1"
+                             src="fonts/redFont.fnt" text="3587" target="Doc" name="scoreText" var="scoreText"/>
+                <LabelBMFont positionType="LeftBottom" positionX="269.0" positionY="757.0" anchorPointX="0.5" anchorPointY="1"
+                             src="fonts/redFont.fnt" text="x" scaleX="0.6" scaleY="0.6" name="targetXText"
+                             var="targetXText" target="Doc">
+                </LabelBMFont>
+                <Sprite positionType="LeftBottom" positionX="218.0" positionY="722.0" anchorPointX="0.5"
+                        anchorPointY="0.5" src="sprites/art.plist/cookie.png" name="targetIcon" var="targetIcon"
+                        target="Doc"/>
+                <Sprite positionType="LeftBottom" positionX="456.0" positionY="740.0" anchorPointX="0.5"
+                        anchorPointY="0.5" src="sprites/art.plist/progressbar_star.png" var="star1" target="Doc"
+                        name="star1"/>
+                <Sprite positionType="LeftBottom" positionX="517.0" positionY="740.0" anchorPointX="0.5"
+                        anchorPointY="0.5" src="sprites/art.plist/progressbar_star.png" target="Doc" var="star2"
+                        name="star2"/>
+                <Sprite positionType="LeftBottom" positionX="561.0" positionY="740.0" anchorPointX="0.5"
+                        anchorPointY="0.5" src="sprites/art.plist/progressbar_star.png" target="Doc" var="star3"
+                        name="star3"/>
+                <Menu positionType="LeftBottom" positionX="0" positionY="0" anchorPointX="0.5"
+                      anchorPointY="0.5">
+                    <MenuItem positionType="LeftBottom" positionX="602.0" positionY="725.0" anchorPointX="0.5"
+                              anchorPointY="0.5" actionTarget="Doc" normalImage="sprites/art.plist/pause_button.png"
+                              rotation="0" visible="true" name="pauseButton" target="Doc" var="pauseButton"
+                              onClick="onPauseClick" scaleY="1" scaleX="-1"/>
+                </Menu>
+            </Node>
+        </Node>
+        <Sprite positionType="LeftBottom" positionX="0.0" positionY="769.0" anchorPointX="0"
+                anchorPointY="0" var="top" target="Doc" name="top" src="assets/logo_top.png"/>
+        <Sprite positionType="LeftBottom" positionX="0.0" positionY="0.0" anchorPointX="0"
+                anchorPointY="0" scaleY="-1" var="bottom" target="Doc" name="bottom" src="assets/logo_top.png"/>
+    </Layer>
+
+
+</Document>
