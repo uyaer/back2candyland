@@ -69,7 +69,7 @@
                         anchorPointY="0.5" src="sprites/art.plist/progressbar_bpttom.png" name="bar_bg" scaleX="0.9"
                         scaleY="0.9"/>
                 <Sprite positionType="LeftBottom" positionX="386.63635" positionY="734.1818" anchorPointX="0"
-                        anchorPointY="0.5" src="assets/bar.png" name="bar" var="bar" target="Doc" scaleX="0.9"
+                        anchorPointY="0.5" src="myassets/bar.png" name="bar" var="bar" target="Doc" scaleX="0.9"
                         scaleY="0.9"/>
                 <Sprite positionType="LeftBottom" positionX="99.0" positionY="720.0" anchorPointX="0.5"
                         anchorPointY="0.5" name="moves_bg" src="sprites/art.plist/moves.png" scaleX="1" scaleY="1">
@@ -107,9 +107,9 @@
             </Node>
         </Node>
         <Sprite positionType="LeftBottom" positionX="0.0" positionY="769.0" anchorPointX="0"
-                anchorPointY="0" var="top" target="Doc" name="top" src="assets/logo_top.png"/>
+                anchorPointY="0" var="top" target="Doc" name="top" src="myassets/logo_top.png"/>
         <Sprite positionType="LeftBottom" positionX="0.0" positionY="0.0" anchorPointX="0"
-                anchorPointY="0" scaleY="-1" var="bottom" target="Doc" name="bottom" src="assets/logo_top.png"/>
+                anchorPointY="0" scaleY="-1" var="bottom" target="Doc" name="bottom" src="myassets/logo_top.png"/>
     </Layer>
 
 

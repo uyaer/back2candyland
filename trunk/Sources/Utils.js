@@ -121,6 +121,27 @@ function number2String(num, digit) {
     return result + str;
 }
 
+function hexC3B(hexNum) {
+    var r = hexNum >> 16 & 0x0000FF;
+    var g = hexNum >> 8 & 0x0000FF;
+    var b = hexNum & 0x0000FF;
+    return cc.c3b(r, g, b);
+}
+
+/**
+ * 格式为RGB,默认alpha为255
+ * @param hexNum
+ * @returns {Number|Number|Number|Number}
+ */
+function hexC4B(hexNum) {
+    var a = 255;
+    var r = hexNum >> 16 & 0x0000FF;
+    var g = hexNum >> 8 & 0x0000FF;
+    var b = hexNum & 0x0000FF;
+    return cc.c4b(r, g, b, a);
+}
+
+
 function distanceBetweenPoints(x1, y1, x2, y2) {
     return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 }
@@ -163,7 +184,7 @@ function createSpriteFromSpritesheet(name) {
 function createBitmap(name) {
     var uri = textureCacheKey[name];
     if (!uri) {
-        uri = "assets/preloader/" + name + ".png";
+        uri = "myassets/preloader/" + name + ".png";
     }
     return cc.Sprite.create(uri);
 }

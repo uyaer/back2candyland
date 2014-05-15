@@ -544,7 +544,7 @@ CharMenu.prototype.showHero = function (e) {
     this.char.setPositionX(data[0]);
     this.char.setRotation(data[2]);
     var n = this.getCharY(data[1]);
-    this.char.setPositionY(n);
+    this.char.setPositionY(n+App.WIN_H*0.065);
     this.char.setVisible(true);
     this.char.gotoAndPlay(0);
     this.setCharLookTime(e);
@@ -629,6 +629,8 @@ var MainMenu = CharMenu.extend({
         var root = cc.Node.create();
         this.sprite = root;
         this.sprite.retain();
+        var colorbg = cc.LayerGradient.create(App.episode == 2 ? hexC4B(0xBFA8F8) : hexC4B(0xace5ff), App.episode == 2 ? hexC4B(0xdaa2d3) : hexC4B(0xa893de), cc.p(1, 0));
+        root.addChild(colorbg);
         this.back = createBitmap("main_menu");
         this.back.setAnchorPoint(cc.p(0, 0));
         root.addChild(this.back);
@@ -731,16 +733,16 @@ MainMenu.prototype.onPlayDown = function () {
 };
 MainMenu.prototype.onResize = function () {
     CharMenu.prototype.onResize.call(this);
-    this.logo.setPosition(cc.p(22, App.WIN_H - 75));
-    this.button.setPosition(cc.p(401, 245));
+    this.logo.setPosition(cc.p(22, limit(App.WIN_H * 0.9, 0, App.WIN_H - 79)));
+    this.button.setPosition(cc.p(401, limit(App.WIN_H * 0.26, 245, 350)));
     for (var i = 1; i <= 3; ++i) {
         this.clickables[i].sprite.setPositionX(525 + (i - 2) * 75);
-        this.clickables[i].sprite.setPositionY(App.FULL_SCREEN_H - 66);
+        this.clickables[i].sprite.setPositionY(limit(App.WIN_H * 0.92, 0, App.WIN_H - 66));
         this.clickables[i].sprite.setScale(i == 3 ? .75 : .75);
         this.clickables[i].updateRectScale();
     }
     if (this.moreGames.sprite) {
-        this.moreGames.sprite.setPositionX(this.button.getPositionX() + 115);
+        this.moreGames.sprite.setPositionX(this.button.getPositionX() + 125);
         this.moreGames.sprite.setPositionY(this.button.getPositionY() + 50);
     }
     if (this.crossButton) {
@@ -1015,7 +1017,7 @@ WinMenu.prototype.show = function () {
         var scale = this.starData[i][3];
         var delay = (500 + i * 500);
         sp.runAction(cc.Sequence.create(
-            cc.DelayTime.create(delay/1000),
+            cc.DelayTime.create(delay / 1000),
             cc.Spawn.create(cc.FadeIn.create(0.2), cc.ScaleTo.create(0.2, scale)),
             cc.CallFunc.create(function () {
                 that.stopStarMove();
