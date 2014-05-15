@@ -36,7 +36,7 @@
             scaleX="1" scaleY="1"
             touchEnabled="true" positionType="LeftBottom"><![CDATA[
     te positionType="LeftBottom" positionX="229.0" positionY="278.0" anchorPointX="0.5"
-                anchorPointY="0.5" src="assets/back1.png"/>
+                anchorPointY="0.5" src="myassets/back1.png"/>
         ]]>lBMFont positionType="LeftBottom" positionX="325.0" positionY="309.0" anchorPointX="0.5" anchorPointY="1"
                      src="fonts/blueFont.fnt" text="x"/>
     </Layer>
