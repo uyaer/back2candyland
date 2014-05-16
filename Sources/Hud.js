@@ -140,7 +140,8 @@ Hud.prototype.update = function (dt) {
         this.movesText.stopAllActions();
         this.currentMoves = n;
         this.movesText.setString(n.toString());
-        this.movesText.setPosition(cc.p(117, App.VIEW_TOP - 77));
+        this.movesText.setAnchorPoint(cc.p(0.5, 0));
+        this.movesText.setPosition(cc.p(117, App.GAME_H - 48));
         this.movesText.setScaleX(0.9);
         this.movesText.setScaleY(1.5);
         this.movesText.runAction(cc.ScaleTo.create(0.2, 1, 1));

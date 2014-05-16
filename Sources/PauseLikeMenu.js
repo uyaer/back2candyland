@@ -5,7 +5,7 @@ var PauseLikeMenu = Menu.extend({
     ctor: function () {
         this._super();
         this.showDelay = 0;
-        this.targetPos = 420;
+        this.targetPos = App.WIN_H * 0.42;
         var root = cc.Node.create();
         this.sprite = root;
         this.sprite.retain();
@@ -24,7 +24,7 @@ var PauseLikeMenu = Menu.extend({
         this.backSprite = s;
         root.addChild(menuNode);
         this.baseSprite = menuNode;
-        this.moreGames = new MoreGamesButton(root, 90, 90, 1);
+        this.moreGames = new MoreGamesButton(root, 90, limit(App.WIN_H*0.15,145,280), 1);
     }
 });
 PauseLikeMenu.prototype.show = function () {
@@ -85,7 +85,7 @@ var TargetMenu = PauseLikeMenu.extend({
         var tapTF = bitmapText("tap to continue...", RED_FONT);
         tapTF.setScale(0.65);
         tapTF.setPositionX(App.GAME_W / 2);
-        tapTF.setPositionY(175);
+        tapTF.setPositionY(limit(App.WIN_H*0.25,220,350));
         root.addChild(tapTF);
         this.continueText = tapTF;
         for (var i = 2; i >= 0; --i) {
@@ -143,6 +143,7 @@ var PauseMenu = PauseLikeMenu.extend({
     ctor: function () {
         this._super();
         var that = this;
+        this.targetPos = App.WIN_H * 0.45;
         var root = this.sprite;
         var r;
         var i = bitmapText("pause", BLUE_FONT);
@@ -164,7 +165,6 @@ var PauseMenu = PauseLikeMenu.extend({
         var s = new SoundButton(false, this.baseSprite, 570, 35);
         this.animatedButtons.push(s);
         this.clickables.push(s);
-        this.targetPos = 400;
         this.button = new AnimatedNode(AnimationManager.instance.getAnimation("button"), 1 / 30, null);
         this.baseSprite.addChild(this.button);
         this.button.addAction(97, 0, 0);

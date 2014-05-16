@@ -7,11 +7,11 @@ var SoundsManager = cc.Class.extend({
     /**
      * 是否播放音乐
      */
-    isAudio: false,
+    isAudio: true,
     /**
      * 是否播放背景音乐
      */
-    isBG: false,
+    isBG: true,
     /**
      * 当前背景音乐的路径
      */

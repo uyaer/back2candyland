@@ -39,7 +39,7 @@ MainLayer.prototype.onDidLoadFromCCB = function () {
 
     this.rootNode.onTouchEnded = function (touch, event) {
         var pos = touch.getLocation();
-        if(MenuManager.instance.credits.isMenuActive){ //假如打开了关于我们，则点击事件被吞噬
+        if (MenuManager.instance.credits.isMenuActive) { //假如打开了关于我们，则点击事件被吞噬
             MenuManager.instance.credits.onDown(pos.x, pos.y);
             return;
         }
@@ -56,6 +56,24 @@ MainLayer.prototype.onDidLoadFromCCB = function () {
 
     this.rootNode.update = function (dt) {
         MenuManager.instance.update(dt);
+    }
+
+    this.rootNode.backClicked = function () {
+        trace(" back clicked!!!! ");
+        if (MenuManager.instance.isOnTutorial())return;
+        if (Match3Level.instance.target) { //肯定在玩游戏中
+            if (Match3Level.instance.isPaused) { //已经暂停了
+                MenuManager.instance.pause.onPlayDown();
+            } else {
+                this.controller.onPauseClick();
+            }
+        } else {
+            if (MenuManager.instance.isOnMap()) {
+                MenuManager.instance.map.loadMain();
+            } else if (MenuManager.instance.isOnMain()) {
+                cc.Director.getInstance().end();
+            }
+        }
     }
 };
 
@@ -82,8 +100,8 @@ MainLayer.prototype.onEnter = function () {
     //上下背景
     this.bottom.setPositionY(App.VIEW_BOTTOM);
     this.top.setPositionY(App.VIEW_TOP);
-    this.bottom.setZOrder(borderZOrder+1);
-    this.top.setZOrder(borderZOrder+1);
+    this.bottom.setZOrder(borderZOrder + 1);
+    this.top.setZOrder(borderZOrder + 1);
     //hud
     this.hud = new Hud(this);
     this.rootNode.addChild(this.hud.sprite, borderZOrder);
@@ -95,6 +113,10 @@ MainLayer.prototype.onEnter = function () {
     this.rootNode.setTouchMode(cc.TOUCH_ONE_BY_ONE);
     this.rootNode.setTouchEnabled(true);
     this.rootNode.setTouchPriority(-1);
+
+    if (sys.os.toLowerCase() == "android") {
+        this.rootNode.setKeyboardEnabled(true);
+    }
 }
 
 MainLayer.prototype.onPauseClick = function () {
