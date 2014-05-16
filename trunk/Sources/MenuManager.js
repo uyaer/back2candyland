@@ -20,8 +20,15 @@ function MenuManager() {
 }
 
 MenuManager.prototype.isOnTutorial = function () {
-    return this.current == this.tutorial
+    return this.current == this.tutorial;
 };
+MenuManager.prototype.isOnMain = function () {
+    return this.current == this.mainMenu;
+};
+MenuManager.prototype.isOnMap = function () {
+    return this.current == this.map;
+};
+
 MenuManager.prototype.show = function (targetMenu, isShowTransistion) {
     if (arguments.length == 1) {
         isShowTransistion = true;

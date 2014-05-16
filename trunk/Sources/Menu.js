@@ -152,7 +152,6 @@ var MapMenu = Menu.extend({
 
         this.onResize();
     }
-
 });
 
 MapMenu.prototype.onResize = function () {
@@ -164,7 +163,7 @@ MapMenu.prototype.onResize = function () {
         this.clickables[i].updateRectScale();
     }
 };
-MapMenu.prototype.loadMain = function (e) {
+MapMenu.prototype.loadMain = function () {
     MenuManager.instance.show(MenuManager.instance.mainMenu)
 };
 MapMenu.prototype.updatePointerData = function () {
@@ -1081,11 +1080,9 @@ var SplashScreen = Menu.extend({
     ctor: function () {
         this._super();
         var root = cc.Node.create();
-        var sp = createSpriteFromSpritesheet("white");
-        sp.setScaleX((100 + App.WIN_W) / 50);
-        sp.setScaleY((100 + App.WIN_H) / 50);
-        sp.setAnchorPoint(cc.p(0, 0));
-        sp.setPosition(cc.p(-50, -50));
+        var sp = createBitmap("preloader_back");
+        sp.setScale(1239 / 256);
+        sp.setPosition(cc.p(App.WIN_W / 2, App.WIN_H / 2));
         root.addChild(sp);
         this.sprite = root;
         this.sprite.retain();

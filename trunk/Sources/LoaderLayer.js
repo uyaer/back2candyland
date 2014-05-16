@@ -36,6 +36,7 @@ LoaderLayer.prototype.onEnter = function () {
     App.VIEW_TOP = App.WIN_H - App.VIEW_BOTTOM;
     App.SHIFT_H = App.VIEW_BOTTOM;
 
+    trace("this os :", sys.os, "  this platform :", sys.platform);
 
     var preloader = new Preloader(this.startGame);
     this.rootNode.addChild(preloader);

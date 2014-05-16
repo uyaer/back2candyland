@@ -14,17 +14,10 @@ var mySetTimeout = function (callback, delay, target) {
         throw "err!";
         return;
     }
-    if (!target.scheduleOnce) {
-//        cc.Director.getInstance().getScheduler().scheduleCallbackForTarget(target, function () {
-//            callback.call(target);
-//        }, delay / 1000, 1, delay / 1000, false);
-        var node = cc.Director.getInstance().getRunningScene();
-        node.scheduleOnce(function () {
-            callback.call(target);
-        }, delay / 1000);
-    } else {
-        target.scheduleOnce(callback, delay / 1000);
-    }
+    var node = cc.Director.getInstance().getRunningScene();
+    node.scheduleOnce(function () {
+        callback.call(target);
+    }, delay / 1000);
 }
 var setTimeout = setTimeout || mySetTimeout;
 

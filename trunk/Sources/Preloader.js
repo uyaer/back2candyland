@@ -5,7 +5,6 @@ var Preloader = cc.Layer.extend({
     ctor: function (onLoadOverCallback) {
         this._super();
         this.onLoadOverCallback = onLoadOverCallback;
-        this.sprites = [];
         this.mainLoadingStarted = false;
         this.shownButton = false;
         this.loadedMain = false;
@@ -31,27 +30,54 @@ Preloader.prototype.onTouchesEnded = function (touches, event) {
 Preloader.prototype.init = function () {
     if (this.mainLoadingStarted)return;
     this.mainLoadingStarted = true;
+    var that = this;
 
     this.setTouchEnabled(true);
 
     var sp = createBitmap("preloader_back");
+    sp.setScale(1239 / 256);
     sp.setPosition(cc.p(App.WIN_W / 2, App.WIN_H / 2));
     this.addChild(sp);
-    this.sprites.push(sp);
+    //line
+    var line = cc.LayerColor.create(cc.c4b(255, 255, 255, 255), App.WIN_W / 2, 2);
+    line.setContentSize(cc.size(App.WIN_W / 2, 2));
+    line.setPosition(cc.p(App.WIN_W / 4, (App.WIN_H / 2 + 100)));
+    this.addChild(line);
+
+    //叶子
+    var logo = createBitmap("progress_logo");
+    logo.setAnchorPoint(cc.p(0, 0));
+    logo.setPosition(cc.p(177, App.WIN_H / 2 + 100));
+    this.addChild(logo);
+
+    //txt
+    var txt = createBitmap("progress_uyaer");
+    txt.setAnchorPoint(cc.p(0.5, 1));
+    txt.setPosition(cc.p(App.WIN_W / 2, App.WIN_H / 2 + 90));
+    this.addChild(txt);
+
+    var barBg = createBitmap("progress_bar_bg");
+    barBg.setPosition(cc.p(App.WIN_W / 2, App.WIN_H / 2 + 100));
+    barBg.setScaleY(2 / 39);
+    barBg.setVisible(false);
+    this.addChild(barBg);
+
     var barTop = createBitmap("progress_bar_top");
     this.addChild(barTop);
-    barTop.setPosition(cc.p(0, 322));
-    barTop.setAnchorPoint(cc.p(0, 0));
+    barTop.setAnchorPoint(cc.p(0, 0.5));
+    barTop.setPosition(cc.p((App.WIN_W - 451) / 2, App.WIN_H / 2 + 100));
     this.barSize = barTop.getContentSize();
+    barTop.setVisible(false);
     this.bar = barTop;
-    this.sprites.push(barTop);
+
+    //play
     var playBtn = createBitmap("play");
     this.addChild(playBtn);
-    playBtn.setAnchorPoint(cc.p(78 / 241, 0.5));
-    playBtn.setPosition(cc.p(430, 465));
+    playBtn.setPosition(cc.p(App.WIN_W / 2, App.WIN_H * 0.25 + 100));
     this.playButton = playBtn;
     this.playButton.setOpacity(0);
-    this.sprites.push(playBtn);
+
+
     var index = App.episode;
     var basePath = App.episode <= 1 ? "myassets/tutorial/" : "myassets/tutorial/episode2/";
     this.loadResArr = [
@@ -113,11 +139,34 @@ Preloader.prototype.init = function () {
 
     this.loadTotalLen = this.loadResArr.length;
     this.loadedCount = 0;
+    this.dtTime = Date.now();
 
-    this.load();
+    //run Animation
+    logo.runAction(cc.MoveBy.create(0.5, cc.p(0, 50)));
+    txt.runAction(cc.Sequence.create(
+        cc.DelayTime.create(0.5),
+        cc.MoveBy.create(0.5, cc.p(0, -50))
+    ));
+    line.runAction(cc.Sequence.create(
+        cc.DelayTime.create(1),
+        cc.Spawn.create(cc.ScaleTo.create(0.5, 455 / App.WIN_W / 2, 1), cc.TintTo.create(0.5, 0, 255, 0)),
+        cc.CallFunc.create(function () {
+            line.setVisible(false);
+            barBg.setVisible(true);
+            barBg.runAction(cc.Sequence.create(
+                cc.ScaleTo.create(0.25, 1, 1),
+                cc.CallFunc.create(function () {
+                    barTop.setVisible(true);
+                    that.load();
+                })
+            ));
+        })
+    ));
 
 };
 Preloader.prototype.load = function () {
+    trace("load ....", Date.now() - this.dtTime);
+    this.dtTime = Date.now();
     if (this.loadResArr.length > 0) {
         this.loadedCount++;
         var resObj = this.loadResArr.splice(0, 1)[0];
@@ -141,18 +190,19 @@ Preloader.prototype.load = function () {
                 bgSoundURL = url;
                 break;
             case Preloader.TYPE_AUDIO:
-                cc.AudioEngine.getInstance().preloadEffect(url);
+                cc.AudioEngine.getInstance().preloadEffect(url + sys.os.toLowerCase() == "windows" ? ".mp3" : ".ogg");
                 name = url.substring(url.lastIndexOf("/") + 1, url.length);
                 audioCacheKey[name] = url;
                 break;
         }
         this.onProgress();
-//        setTimeout(this.load, 1, this);
-        this.load();
+
+        setTimeout(this.load, 1, this);
     } else {
         this.onLoadComplete();
     }
 }
+
 Preloader.prototype.onLoadComplete = function () {
 
 
@@ -166,7 +216,6 @@ Preloader.prototype.onLoadComplete = function () {
     this.animationManager.putAnimation("buttons_anim", JSON.parse(cc.FileUtils.getInstance().getStringFromFile(txtCacheKey["buttons_pause_anim"])), 0);
 
     AnimManager.instance.init();
-
 
 
     this.onProgress();
