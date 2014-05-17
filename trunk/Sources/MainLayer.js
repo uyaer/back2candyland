@@ -4,6 +4,8 @@
 var MainLayer = function () {
     cc.log("MainLayer");
 
+    this.lastBackKeyClicked = 0;
+
     this.borderNode = this.borderNode || cc.Node.create();
     this.bottom = this.bottom || cc.Node.create();
     this.top = this.top || cc.Node.create();
@@ -59,10 +61,12 @@ MainLayer.prototype.onDidLoadFromCCB = function () {
     }
 
     this.rootNode.backClicked = function () {
-        trace(" back clicked!!!! ");
+        var dt = Date.now() - this.lastBackKeyClicked;
+        this.lastBackKeyClicked = Date.now();
+        if (dt < 200)return;
         if (MenuManager.instance.isOnTutorial())return;
         if (Match3Level.instance.target) { //肯定在玩游戏中
-            if (Match3Level.instance.isPaused) { //已经暂停了
+            if (MenuManager.instance.isOnPause()) { //已经暂停了
                 MenuManager.instance.pause.onPlayDown();
             } else {
                 this.controller.onPauseClick();
@@ -71,7 +75,8 @@ MainLayer.prototype.onDidLoadFromCCB = function () {
             if (MenuManager.instance.isOnMap()) {
                 MenuManager.instance.map.loadMain();
             } else if (MenuManager.instance.isOnMain()) {
-                cc.Director.getInstance().end();
+                JSBHelper.AddSelector("closeApp", App.closeApp);
+                SendMessageToNative("confirmClose", null);
             }
         }
     }
@@ -115,7 +120,7 @@ MainLayer.prototype.onEnter = function () {
     this.rootNode.setTouchPriority(-1);
 
     if (sys.os.toLowerCase() == "android") {
-        this.rootNode.setKeyboardEnabled(true);
+        this.rootNode.setKeypadEnabled(true);
     }
 }
 

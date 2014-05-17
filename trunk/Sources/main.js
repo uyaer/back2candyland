@@ -126,6 +126,8 @@ var ccb_resources = [
     {type: 'fnt', src: "fonts/blueFont.fnt"},
 ];
 
+require("JSBHelper.js");
+
 require("App.js");
 require("Data.js");
 require("Utils.js");

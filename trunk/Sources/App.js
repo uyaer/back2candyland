@@ -23,3 +23,29 @@ App.ACTUAL_H = App.GAME_H;
 App.SHIFT_H = (App.FULL_SCREEN_H - App.GAME_H) / 2;
 App.CURRENT_SHIFT = 0;
 App.episode = 1;
+
+
+//////////////////////////////////////
+///////////////  plus ///////////////////////
+////////////////         //////////////////////
+/////////////////             /////////////////////
+
+
+App.showCpAd = function () {
+    if (sys.os.toLowerCase() == "android") {
+        SendMessageToNative("showCpAd", null);
+    }
+}
+App.showBannerAd = function () {
+    if (sys.os.toLowerCase() == "android") {
+        SendMessageToNative("showBannerAd", {"isShow": "1"});
+    }
+}
+App.hideBannerAd = function () {
+    if (sys.os.toLowerCase() == "android") {
+        SendMessageToNative("showBannerAd", {"isShow": "0"});
+    }
+}
+App.closeApp = function () {
+    cc.Director.getInstance().end();
+}

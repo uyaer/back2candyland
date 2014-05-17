@@ -82,12 +82,9 @@ SoundsManager.prototype.setHasAudioEff = function (flag) {
 SoundsManager.prototype.playMusic = function (path) {
     path = path || bgSoundURL;
     if (this.isBG) {
-        trace("play bg sound!!!!!!!",cc.AudioEngine.getInstance().isMusicPlaying());
-        if(!cc.AudioEngine.getInstance().isMusicPlaying()){
+        trace("play bg sound!!!!!!!", cc.AudioEngine.getInstance().isMusicPlaying());
+        if (!cc.AudioEngine.getInstance().isMusicPlaying()) {
             this.bgSoundPath = path;
-            if (path.indexOf(".") == -1) {
-                path += sys.os == "windows" ? ".mp3" : ".ogg";
-            }
             cc.AudioEngine.getInstance().playMusic(path, true);
             cc.AudioEngine.getInstance().setMusicVolume(0.55);
         }
@@ -104,7 +101,6 @@ SoundsManager.prototype.playEffect = function (path, loop, vol) {
     }
     if (this.isAudio) {
         loop = arguments[1] || false;
-        path += sys.os == "windows" ? ".mp3" : ".ogg";
         cc.AudioEngine.getInstance().playEffect(path, loop);
         cc.AudioEngine.getInstance().setEffectsVolume(vol);
     }
@@ -138,6 +134,9 @@ SoundsManager.prototype.playSound = function (name, delay) {
         }
     }
     var totalDelay = time + delay;
+    if (!audioCacheKey[name]) {
+        trace("no music ,the name is::", name);
+    }
     if (totalDelay > 0) {
         (function (name, totalDelay) {
             setTimeout(function () {

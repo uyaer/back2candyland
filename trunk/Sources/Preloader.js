@@ -8,8 +8,6 @@ var Preloader = cc.Layer.extend({
         this.mainLoadingStarted = false;
         this.shownButton = false;
         this.loadedMain = false;
-        this.hasBrandLogo = false;
-        this.hasMoreGames = false;
         Preloader.instance = this;
         this.barSize = cc.size(1, 1);
         this.loadResArr = [];
@@ -139,7 +137,6 @@ Preloader.prototype.init = function () {
 
     this.loadTotalLen = this.loadResArr.length;
     this.loadedCount = 0;
-    this.dtTime = Date.now();
 
     //run Animation
     logo.runAction(cc.MoveBy.create(0.5, cc.p(0, 50)));
@@ -165,8 +162,6 @@ Preloader.prototype.init = function () {
 
 };
 Preloader.prototype.load = function () {
-    trace("load ....", Date.now() - this.dtTime);
-    this.dtTime = Date.now();
     if (this.loadResArr.length > 0) {
         this.loadedCount++;
         var resObj = this.loadResArr.splice(0, 1)[0];
@@ -186,12 +181,14 @@ Preloader.prototype.load = function () {
                 txtCacheKey[name] = url;
                 break;
             case Preloader.TYPE_SOUND:
+                url = url + (sys.os.toLowerCase() == "windows" ? ".mp3" : ".ogg");
                 cc.AudioEngine.getInstance().preloadMusic(url);
                 bgSoundURL = url;
                 break;
             case Preloader.TYPE_AUDIO:
-                cc.AudioEngine.getInstance().preloadEffect(url + sys.os.toLowerCase() == "windows" ? ".mp3" : ".ogg");
                 name = url.substring(url.lastIndexOf("/") + 1, url.length);
+                url = url + (sys.os.toLowerCase() == "windows" ? ".mp3" : ".ogg");
+                cc.AudioEngine.getInstance().preloadEffect(url);
                 audioCacheKey[name] = url;
                 break;
         }

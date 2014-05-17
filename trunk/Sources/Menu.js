@@ -212,6 +212,9 @@ MapMenu.prototype.show = function () {
         this.movePoinPointerToButton(LevelManager.instance.lastOpened)
     }
     this.updatePointerData();
+
+    //隐藏广告
+    App.hideBannerAd();
 };
 MapMenu.prototype.fastUnlock = function (e) {
     this.levelToUnlock = -1;
@@ -338,7 +341,7 @@ MapMenu.prototype.onPointerDown = function () {
         LevelManager.instance.prepareToLoadLevel(this.currentLevel);
         SoundsManager.instance.playSound("play_button");
         this.isPlayPressed = true;
-        return
+        return;
     }
 };
 MapMenu.prototype.stopPointerMove = function () {
@@ -543,7 +546,7 @@ CharMenu.prototype.showHero = function (e) {
     this.char.setPositionX(data[0]);
     this.char.setRotation(data[2]);
     var n = this.getCharY(data[1]);
-    this.char.setPositionY(n+App.WIN_H*0.065);
+    this.char.setPositionY(n + App.WIN_H * 0.065);
     this.char.setVisible(true);
     this.char.gotoAndPlay(0);
     this.setCharLookTime(e);
@@ -751,7 +754,9 @@ MainMenu.prototype.onResize = function () {
 MainMenu.prototype.show = function () {
     CharMenu.prototype.show.call(this);
     this.button.gotoAndPlay(0);
-    this.setPlayButtonTime(true)
+    this.setPlayButtonTime(true);
+    //隐藏广告
+    App.hideBannerAd();
 };
 MainMenu.prototype.hide = function () {
     CharMenu.prototype.hide.call(this)
@@ -1061,7 +1066,7 @@ WinMenu.prototype.stopStarMove = function () {
     this.starShowLeft--;
     if (this.starShowLeft <= 0) {
         //TODO  添加广告
-//        App.instance.showAds()
+        App.showCpAd();
     }
 };
 WinMenu.prototype.update = function (t) {

@@ -27,7 +27,7 @@ LoaderLayer.prototype.onDidLoadFromCCB = function () {
 };
 
 LoaderLayer.prototype.onEnter = function () {
-
+    App.hideBannerAd();
 
     var size = cc.Director.getInstance().getWinSize();
     App.WIN_W = size.width;
