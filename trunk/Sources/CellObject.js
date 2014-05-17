@@ -11,7 +11,6 @@ var CellObject = GameObject.extend({
         this.marksLeft = 0;
         this.mark = null;
         this.block = null;
-        this.blockTop = null;
         this.colorBlock = -1;
         this.isClearedByClickOrColor = false;
         this.scoreToAdd = -1;
@@ -66,7 +65,6 @@ CellObject.prototype.setMark = function (marksLeft) {
     this.mark = sp
 };
 CellObject.prototype.reset = function () {
-    this.blockTop = null;
     if (this.block) {
         this.block.removeFromParent();
         this.block = null;
@@ -137,8 +135,6 @@ CellObject.prototype.removeBlock = function () {
     if (this.isColorBlocked) {
         this.colorBlock = -1;
         this.setTempBlock(true, .15);
-        this.blockTop.removeFromParent();
-        this.blockTop = null
     }
     if (this.level.isActive) {
         SoundsManager.instance.playSound(t ? "color_crash" : "choco_crash");
@@ -326,7 +322,6 @@ CellObject.prototype.update = function (dt) {
 CellObject.prototype.destroy = function () {
     this.clearCell(false);
     this.mark = null;
-    this.blockTop = null;
     this.block = null;
     GameObject.prototype.destroy.call(this)
 };
