@@ -28,15 +28,14 @@ var Match3Level = cc.Layer.extend({
         this.cellData = null;
         this.cachedSprites = {};
         this.showTargetIn = -1;
-        this.backLayer = cc.Layer.create();
-        this.addChild(this.backLayer);
-        this.underGemLayer = cc.Layer.create();
-        this.gemLayer = cc.Layer.create();
-        this.blockLayer = cc.Layer.create();
-        this.gemDestroyLayer = cc.Layer.create();
-        this.blockDestroyLayer = cc.Layer.create();
-        this.bonusLayer = cc.Layer.create();
+        this.underGemLayer = cc.SpriteBatchNode.create("sprites/art.png");
+        this.gemLayer = cc.SpriteBatchNode.create("sprites/art.png");
+        this.blockLayer = cc.SpriteBatchNode.create("sprites/art.png");
+        this.gemDestroyLayer = cc.SpriteBatchNode.create("sprites/art.png");
+        this.blockDestroyLayer = cc.SpriteBatchNode.create("sprites/art.png");
+        this.bonusLayer = cc.SpriteBatchNode.create("sprites/art.png");
         this.bonusIndicatorLayer = cc.Layer.create();
+        this.endBounsLayer = cc.SpriteBatchNode.create("sprites/art.png");
         this.hudLayer = cc.Layer.create();
         Match3Level.instance = this;
         Match3Level.pool = new ObjectPool();
@@ -55,7 +54,8 @@ var Match3Level = cc.Layer.extend({
         this.addChild(this.blockDestroyLayer, 5);
         this.addChild(this.bonusLayer, 6);
         this.addChild(this.bonusIndicatorLayer, 7);
-        this.addChild(this.hudLayer, 8);
+        this.addChild(this.endBounsLayer, 8);
+        this.addChild(this.hudLayer, 9);
         this.setFieldProps(Match3Level.TILE_SIZE, 26, 104, Match3Level.LEVEL_W, Match3Level.LEVEL_H);
         this.cells = new Array();
         for (var i = 0; i < this.fieldWidth; i++) {
@@ -149,7 +149,7 @@ Match3Level.prototype.starMoveAwardMode = function () {
     }
     this.objects.push(Match3Level.pool.getText("amazing!", null, 3, App.GAME_W / 2, App.SHIFT_H + 400));
     var s = this.hud.movesText.getPositionX();
-    var o = this.hud.movesText.getPositionY() - 20;
+    var o = this.hud.movesText.getPositionY() + 20;
     var isHasMoveLeft = this.movesLeft > 0;
     var cellArr = [];
     var boundTypeArr = [];

@@ -12,7 +12,7 @@ var SinglePlayObject = GameObject.extend({
         if (typeof scale === "undefined") {
             scale = 1
         }
-        var sp = cc.Sprite.create();
+        var sp = cc.Sprite.createWithSpriteFrameName("color_wall0001.png");
         sp.setScale(scale);
         sp.setPosition(x, y);
         this.lastFrame = lastFrame;

@@ -75,6 +75,7 @@ var MapMenu = Menu.extend({
         this.sprite = cc.Node.create();
         this.sprite.retain();
         this.scrollSprite = cc.Node.create();
+
         var totalOffY = 0;
         var arr = [
             [0, -10, -20],
@@ -92,6 +93,8 @@ var MapMenu = Menu.extend({
             totalOffY += sp.getBoundingBox().height + offsetY;
             this.mainSprites.push(sp);
         }
+        var batch = cc.SpriteBatchNode.create("sprites/art.png");
+        this.scrollSprite.addChild(batch);
         this.rect = cc.rect(0, 0, App.WIN_W, App.WIN_H);
         for (i = 0; i < LevelManager.LEVEL_AMOUNT; ++i) {
             var a = mapButtons[App.episode][i];
@@ -99,7 +102,7 @@ var MapMenu = Menu.extend({
             sp.setPosition(cc.p(a[0], this.height - a[1]));
             sp.setScaleX(a[3]);
             sp.setScaleY(a[4]);
-            this.scrollSprite.addChild(sp);
+            batch.addChild(sp);
             this.buttons.push(sp);
         }
         //那个指针图标
@@ -1093,7 +1096,7 @@ var SplashScreen = Menu.extend({
         this.sprite.retain();
         var logo = createBitmap("zibbo_logo");
         root.addChild(logo);
-        logo.setPosition(cc.p(App.WIN_W / 2, App.WIN_H / 2 + 60));
+        logo.setPosition(cc.p(App.WIN_W / 2, App.WIN_H / 2));
         this.logo = logo;
     }
 });
