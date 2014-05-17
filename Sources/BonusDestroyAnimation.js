@@ -62,7 +62,7 @@ BonusDestroyAnimation.prototype.setLight = function () {
     var that = this;
     this.sprite.setVisible(false);
     this.glow.setVisible(false);
-    this.light = cc.Sprite.create();
+    this.light = cc.Sprite.createWithSpriteFrameName("color_bonus0001.png");
     this.light.runAction(cc.Sequence.create(
         AnimManager.instance.getAnimate(ANIM_BONUS_BLINK),
         cc.CallFunc.create(function () {

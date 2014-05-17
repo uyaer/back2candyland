@@ -9,7 +9,7 @@ var GemDestroyAnimation = GameObject.extend({
         this.color = color;
         this.totalFrames = GemDestroyAnimation.animLen[color];
         this.fileName = FieldObject.assetNames[this.color];
-        this.sprite = cc.Sprite.create();
+        this.sprite = cc.Sprite.createWithSpriteFrameName("blue.png");
         this.sprite.retain();
         var reg = GemDestroyAnimation.regPoints[this.color];
         var size = GemDestroyAnimation.animSizes[this.color];

@@ -4,8 +4,6 @@
 var MainLayer = function () {
     cc.log("MainLayer");
 
-    this.lastBackKeyClicked = 0;
-
     this.borderNode = this.borderNode || cc.Node.create();
     this.bottom = this.bottom || cc.Node.create();
     this.top = this.top || cc.Node.create();
@@ -75,7 +73,7 @@ MainLayer.prototype.onDidLoadFromCCB = function () {
             if (MenuManager.instance.isOnMap()) {
                 MenuManager.instance.map.loadMain();
             } else if (MenuManager.instance.isOnMain()) {
-                JSBHelper.AddSelector("closeApp", App.closeApp);
+                JSBHelper.AddSelector("closeApp",App.closeApp);
                 SendMessageToNative("confirmClose", null);
             }
         }

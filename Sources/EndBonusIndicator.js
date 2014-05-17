@@ -12,7 +12,7 @@ var EndBonusIndicator = GameObject.extend({
         sp.setVisible(false);
         this.delay = i;
         this.sprite = sp;
-        this.level.hudLayer.addChild(this.sprite);
+        this.level.endBounsLayer.addChild(this.sprite);
     }
 });
 Object.defineProperty(EndBonusIndicator.prototype, "totalTime", {

@@ -196,5 +196,5 @@ if (sys.platform == 'browser') {
     cc.FileUtils.getInstance().addSearchPath("myassets");
     cc.FileUtils.getInstance().addSearchPath("fonts");
     cc.FileUtils.getInstance().addSearchPath("sprites");
-    cc.BuilderReader.runScene("", "LoaderLayer");
+    cc.Director.getInstance().runWithScene(LoaderLayer.getScene());
 }

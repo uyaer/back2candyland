@@ -39,23 +39,23 @@ Preloader.prototype.init = function () {
     //line
     var line = cc.LayerColor.create(cc.c4b(255, 255, 255, 255), App.WIN_W / 2, 2);
     line.setContentSize(cc.size(App.WIN_W / 2, 2));
-    line.setPosition(cc.p(App.WIN_W / 4, (App.WIN_H / 2 + 100)));
+    line.setPosition(cc.p(App.WIN_W / 4, (App.WIN_H / 2 + 20)));
     this.addChild(line);
 
     //叶子
     var logo = createBitmap("progress_logo");
     logo.setAnchorPoint(cc.p(0, 0));
-    logo.setPosition(cc.p(177, App.WIN_H / 2 + 100));
+    logo.setPosition(cc.p(177, App.WIN_H / 2 + 20));
     this.addChild(logo);
 
     //txt
     var txt = createBitmap("progress_uyaer");
     txt.setAnchorPoint(cc.p(0.5, 1));
-    txt.setPosition(cc.p(App.WIN_W / 2, App.WIN_H / 2 + 90));
+    txt.setPosition(cc.p(App.WIN_W / 2, App.WIN_H / 2 + 10));
     this.addChild(txt);
 
     var barBg = createBitmap("progress_bar_bg");
-    barBg.setPosition(cc.p(App.WIN_W / 2, App.WIN_H / 2 + 100));
+    barBg.setPosition(cc.p(App.WIN_W / 2, App.WIN_H / 2 + 20));
     barBg.setScaleY(2 / 39);
     barBg.setVisible(false);
     this.addChild(barBg);
@@ -63,7 +63,7 @@ Preloader.prototype.init = function () {
     var barTop = createBitmap("progress_bar_top");
     this.addChild(barTop);
     barTop.setAnchorPoint(cc.p(0, 0.5));
-    barTop.setPosition(cc.p((App.WIN_W - 451) / 2, App.WIN_H / 2 + 100));
+    barTop.setPosition(cc.p((App.WIN_W - 451) / 2, App.WIN_H / 2 + 20));
     this.barSize = barTop.getContentSize();
     barTop.setVisible(false);
     this.bar = barTop;
@@ -71,7 +71,7 @@ Preloader.prototype.init = function () {
     //play
     var playBtn = createBitmap("play");
     this.addChild(playBtn);
-    playBtn.setPosition(cc.p(App.WIN_W / 2, App.WIN_H * 0.25 + 100));
+    playBtn.setPosition(cc.p(App.WIN_W / 2, App.WIN_H * 0.25 + 10));
     this.playButton = playBtn;
     this.playButton.setOpacity(0);
 
@@ -139,10 +139,10 @@ Preloader.prototype.init = function () {
     this.loadedCount = 0;
 
     //run Animation
-    logo.runAction(cc.MoveBy.create(0.5, cc.p(0, 50)));
+    logo.runAction(cc.MoveBy.create(0.5, cc.p(0, 16)));
     txt.runAction(cc.Sequence.create(
         cc.DelayTime.create(0.5),
-        cc.MoveBy.create(0.5, cc.p(0, -50))
+        cc.MoveBy.create(0.5, cc.p(0, -35))
     ));
     line.runAction(cc.Sequence.create(
         cc.DelayTime.create(1),
