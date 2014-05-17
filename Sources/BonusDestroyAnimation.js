@@ -5,7 +5,7 @@ var CookieTweenSprite = GameObject.extend({
     ctor: function CookieTweenSprite(t, n, r) {
         var that = this;
         this._super();
-        var sp = createSpriteFromSpritesheet(r == 0 ? "cookie" : "cookie honey");
+        var sp = createSpriteFromSpritesheet(r == 0 ? "cookie" : "cookie_honey");
         sp.x = t + Match3Level.TILE_SIZE / 2;
         sp.y = n + Match3Level.TILE_SIZE / 2;
         this.sprite = sp;

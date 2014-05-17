@@ -138,9 +138,9 @@ SoundsManager.prototype.playSound = function (name, delay) {
         trace("no music ,the name is::", name);
     }
     if (totalDelay > 0) {
+        trace("delay success!!!!", name, totalDelay);
         (function (name, totalDelay) {
             setTimeout(function () {
-                trace("delay success!!!!", name, totalDelay);
                 SoundsManager.instance.playEffect(audioCacheKey[name]);
             }, totalDelay, this);
         })(name, totalDelay);
