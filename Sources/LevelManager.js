@@ -50,6 +50,9 @@ LevelManager.prototype.loadLevel = function (lv) {
     MenuManager.instance.closeCurrent();
     this.currentLevel = lv;
     Match3Level.instance.init(lv);
+
+    //显示广告
+    App.showBannerAd();
 };
 LevelManager.prototype.loadNextLevel = function () {
     //当前关卡设置为成功状态
@@ -62,7 +65,7 @@ LevelManager.prototype.loadNextLevel = function () {
         if (state == LevelData.CLOSED_STATE) {
             MenuManager.instance.map.levelToUnlock = this.currentLevel;
         }
-        MenuManager.instance.show(MenuManager.instance.map,true);
+        MenuManager.instance.show(MenuManager.instance.map, true);
     }
     this.save();
 };

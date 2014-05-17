@@ -28,6 +28,9 @@ MenuManager.prototype.isOnMain = function () {
 MenuManager.prototype.isOnMap = function () {
     return this.current == this.map;
 };
+MenuManager.prototype.isOnPause = function () {
+    return this.current == this.pause;
+};
 
 MenuManager.prototype.show = function (targetMenu, isShowTransistion) {
     if (arguments.length == 1) {

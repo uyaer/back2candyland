@@ -125,7 +125,7 @@ Match3Level.prototype.init = function (lv) {
             break;
     }
     this.target.scores = starValue;
-    trace("...star value is: ",this.target.scores);
+    trace("...star value is: ", this.target.scores);
 
     this.score = 0;
     this.generate();
