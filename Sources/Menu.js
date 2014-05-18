@@ -654,10 +654,10 @@ var MainMenu = CharMenu.extend({
             animNode.addAction(animNode.totalFrames - 1, 0, -1);
             this.blinksDelays.push(this.getBlinkDelay(true))
         }
-        if (App.episode == 2) {
-            this.crossButton = createSpriteFromSpritesheet("play_episode1");
-            root.addChild(this.crossButton);
-        }
+        this.crossButton = createSpriteFromSpritesheet("play_episode"+(App.episode == 2?"1":"2"));
+        root.addChild(this.crossButton);
+
+
         this.logo = new AnimatedNode(AnimationManager.instance.getAnimation("logo"), 1 / 30, null);
         var smallLogo = createSpriteFromSpritesheet(App.episode <= 1 ? "logo_ep1" : "logo_ep2");
         smallLogo.setPosition(cc.p(440, 85));
@@ -690,21 +690,23 @@ var MainMenu = CharMenu.extend({
         this.moreGames = new MoreGamesButton(root, App.GAME_W / 2, 0, 1);
         this.clickables.push(this.moreGames);
         if (this.crossButton) {
-            var a = new ClickableObject(this.crossButton);
-            a.setCircle(85, 0, 0);
-            a.callback = function () {
+            var crossBtn = new ClickableObject(this.crossButton);
+            crossBtn.setCircle(85, 0, 0);
+            crossBtn.callback = function () {
                 that.onEpisodeDown()
             };
-            this.clickables.push(a)
+            this.clickables.push(crossBtn)
         }
         this.onResize()
     }
 });
 MainMenu.prototype.onEpisodeDown = function () {
-//        if (this.crossButton) {
-//            createjs.Tween.get(this.crossButton, {loop: false}).wait(0).to({scaleX: 1.15, scaleY: 1.15}, 150, createjs.Ease.quadOut).to({scaleX: 1, scaleY: 1}, 150, createjs.Ease.quadIn);
-//            window.open("http://www.zibbo.com/", "_blank")
-//        }
+    if(App.episode==1){
+        App.episode = 2;
+    }else {
+        App.episode = 1;
+    }
+    cc.Director.getInstance().replaceScene(LoaderLayer.getScene());
 };
 MainMenu.prototype.loadCredits = function (e) {
     MenuManager.instance.credits.show();
@@ -751,13 +753,26 @@ MainMenu.prototype.onResize = function () {
         this.moreGames.sprite.setPositionY(this.button.getPositionY() + 50);
     }
     if (this.crossButton) {
-        this.crossButton.setPosition(cc.p(110, 285));
+        this.crossButton.setPosition(cc.p(320, App.WIN_H*0.42));
     }
 };
 MainMenu.prototype.show = function () {
     CharMenu.prototype.show.call(this);
     this.button.gotoAndPlay(0);
     this.setPlayButtonTime(true);
+
+    var rotAnim = cc.RotateBy.create(0.35,60);
+    var scaAnim = cc.ScaleBy.create(0.35,1.05);
+    this.crossButton.setRotation(-30);
+    this.crossButton.stopAllActions();
+    this.crossButton.runAction(cc.RepeatForever.create(
+        cc.Spawn.create(
+            cc.Sequence.create(rotAnim,rotAnim.reverse()),
+            cc.Sequence.create(scaAnim,scaAnim.reverse())
+        )
+    ));
+
+
     //隐藏广告
     App.hideBannerAd();
 };

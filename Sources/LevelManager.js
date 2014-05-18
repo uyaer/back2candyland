@@ -16,13 +16,7 @@ var LevelManager = function LevelManager() {
     this.moves = 0;
     this.bonuses = 0;
     this.version += App.episode * 10;
-    LevelManager.LEVEL_AMOUNT = App.episode == 0 ? 60 : 35;
-    var lvDatas = levelDatas[App.episode];
-    for (var i = 0; i < LevelManager.LEVEL_AMOUNT; ++i) {
-        var r = i < lvDatas.length ? "=" + lvDatas[i] : null;
-        this.data.push(new LevelData(i, r, i == 0 ? LevelData.OPENED_STATE : LevelData.CLOSED_STATE));
-    }
-    this.load();
+
 }
 
 LevelManager.LEVEL_AMOUNT = App.episode == 0 ? 60 : 35;
@@ -102,18 +96,21 @@ LevelManager.prototype.save = function () {
         t.push({c: r.state, s: r.stars, p: r.score})
     }
     str.levels = t;
-    sys.localStorage.setItem("save", JSON.stringify(str))
+    sys.localStorage.setItem("save_"+App.episode, JSON.stringify(str));
+    trace("save data.......");
 };
 LevelManager.prototype.load = function () {
-    var saveData = sys.localStorage.getItem("save");
+    this.reset();
+    var saveData = sys.localStorage.getItem("save_"+App.episode);
     if (!saveData)return;
+
     saveData = JSON.parse(saveData);
     var t = saveData.levels;
     if (!t)return;
-    if (this.version != saveData.version) {
-        localStorage.clear();
-        return;
-    }
+//    if (this.version != saveData.version) {
+////        sys.localStorage.clear();
+//        return;
+//    }
     this.moves = Math.max(this.moves, saveData.moves);
     this.bonuses = Math.max(this.bonuses, saveData.bonuses);
     for (var i = 0; i < t.length; ++i) {
@@ -125,6 +122,21 @@ LevelManager.prototype.load = function () {
         }
     }
     this.isFirstLoad = false;
+    trace("load data.......","save_"+App.episode,"this.lastOpened=",this.lastOpened);
 };
+LevelManager.prototype.reset = function () {
+    this.isFirstLoad = true;
+    this.lastOpened = 0;
+    this.currentLevel = 0;
+    this.moves = 0;
+    this.bonuses = 0;
+    this.data = [];
+    LevelManager.LEVEL_AMOUNT = App.episode == 0 ? 60 : 35;
+    var lvDatas = levelDatas[App.episode];
+    for (var i = 0; i < LevelManager.LEVEL_AMOUNT; ++i) {
+        var r = i < lvDatas.length ? "=" + lvDatas[i] : null;
+        this.data.push(new LevelData(i, r, i == 0 ? LevelData.OPENED_STATE : LevelData.CLOSED_STATE));
+    }
+}
 
 LevelManager.instance = new LevelManager();

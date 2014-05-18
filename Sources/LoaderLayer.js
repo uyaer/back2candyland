@@ -11,6 +11,8 @@ var LoaderLayer = cc.Layer.extend({
         App.VIEW_TOP = App.WIN_H - App.VIEW_BOTTOM;
         App.SHIFT_H = App.VIEW_BOTTOM;
 
+        App.isShowSplashScreen = false;
+
         var preloader = new Preloader(this.startGame);
         this.addChild(preloader);
     },

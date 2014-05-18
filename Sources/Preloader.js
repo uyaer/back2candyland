@@ -86,7 +86,7 @@ Preloader.prototype.init = function () {
         {src: "myassets/bar.png", type: Preloader.TYPE_TEXTURE},
         {src: "sprites/art.plist", type: Preloader.TYPE_PLIST},
         {src: App.episode == 2 ? "myassets/back2.png" : "myassets/back1.png", type: Preloader.TYPE_TEXTURE, id: "back1"},
-        {src: App.episode != 2 ? "myassets/main_menu_ep2.png" : "myassets/main_menu.png", type: Preloader.TYPE_TEXTURE, id: "main_menu"},
+        {src: App.episode != 2 ? "myassets/main_menu.png" : "myassets/main_menu_ep2.png", type: Preloader.TYPE_TEXTURE, id: "main_menu"},
         {src: "myassets/menu_back.png", type: Preloader.TYPE_TEXTURE},
         {src: "myassets/logo_top.png", type: Preloader.TYPE_TEXTURE},
         {src: "myassets/logo.txt", type: Preloader.TYPE_JSON},
@@ -202,6 +202,7 @@ Preloader.prototype.load = function () {
 
 Preloader.prototype.onLoadComplete = function () {
 
+    LevelManager.instance.load();
 
     this.animationManager = new AnimationManager();
     this.animationManager.putAnimation("logo", JSON.parse(cc.FileUtils.getInstance().getStringFromFile(txtCacheKey["logo"])), 0);

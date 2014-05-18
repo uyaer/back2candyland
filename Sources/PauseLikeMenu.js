@@ -24,7 +24,7 @@ var PauseLikeMenu = Menu.extend({
         this.backSprite = s;
         root.addChild(menuNode);
         this.baseSprite = menuNode;
-        this.moreGames = new MoreGamesButton(root, 90, limit(App.WIN_H*0.15,145,280), 1);
+        this.moreGames = new MoreGamesButton(root, 90, limit(App.WIN_H * 0.15, 145, 280), 1);
     }
 });
 PauseLikeMenu.prototype.show = function () {
@@ -85,7 +85,7 @@ var TargetMenu = PauseLikeMenu.extend({
         var tapTF = bitmapText("tap to continue...", RED_FONT);
         tapTF.setScale(0.65);
         tapTF.setPositionX(App.GAME_W / 2);
-        tapTF.setPositionY(limit(App.WIN_H*0.25,220,350));
+        tapTF.setPositionY(limit(App.WIN_H * 0.25, 220, 350));
         root.addChild(tapTF);
         this.continueText = tapTF;
         for (var i = 2; i >= 0; --i) {
@@ -251,24 +251,25 @@ var ResultMenu = PauseLikeMenu.extend({
         this._super();
         var that = this;
         this.dataTexts = [];
-        tf = bitmapText("instance complete!", BLUE_FONT);
-        tf.x = App.GAME_W / 2;
-        tf.y = -45;
+        tf = bitmapText("complete!", BLUE_FONT);
+        tf.setPosition(cc.p(App.WIN_W / 2, 350));
         this.baseSprite.addChild(tf);
-        this.backSprite.scaleY = 1.5;
-        var n = ["stars earned:", "total moves:", "total score:", "bonuses used:"];
-        for (var r = 0; r < n.length; ++r) {
-            for (var i = 0; i < 2; i++) {
-                if (i == 1)continue;
-                var tf = bitmapText(i == 0 ? n[r] : getInt(1e6).toString(), i == 0 ? BLUE_FONT : RED_FONT);
-                if (i == 0) {
+        this.backSprite.setScaleY(1.5);
+        var titleStrArr = ["stars earned:", "total moves:", "total score:", "bonuses used:"];
+        for (var i = 0; i < titleStrArr.length; ++i) {
+            for (var j = 0; j < 2; j++) {
+                var tf = bitmapText(j == 0 ? titleStrArr[i] : getInt(1e6).toString(), j == 0 ? BLUE_FONT : RED_FONT);
+                if (j == 0) {
                     tf.setAnchorPoint(cc.p(0, 0));
                 } else {
                     tf.setAnchorPoint(cc.p(0.5, 0));
                 }
-                tf.setPosition(cc.p(i == 0 ? 30 : 520, 60 + r * 55 + (i == 0 ? 0 : -20)))
-                tf.setScale(i == 0 ? .7 : 1);
-                this.baseSprite.addChild(tf)
+                tf.setPosition(cc.p(j == 0 ? 10 : 530, 250 - (i * 55 ) + (j == 0 ? 0 : 2)))
+                tf.setScale(j == 0 ? .7 : 1);
+                this.baseSprite.addChild(tf);
+                if (j == 1) {
+                    this.dataTexts.push(tf);
+                }
             }
         }
         this.button = new AnimatedNode(AnimationManager.instance.getAnimation("button"), 1 / 30, null);
@@ -276,41 +277,25 @@ var ResultMenu = PauseLikeMenu.extend({
         this.button.addAction(97, 0, 0);
         this.button.addAction(106, 0, -1);
         this.button.setPositionX(App.GAME_W / 2 - 85);
-        this.button.setPositionY(285);
+        this.button.setPositionY(60);
         this.button.setScale(0.75);
         this.button.addAction(this.button.totalFrames - 1, 1, 0);
-        var o = new ClickableObject(this.button);
-        o.setCircle(120, 0, 0);
-        o.callback = function () {
+        var playBtn = new ClickableObject(this.button);
+        playBtn.setCircle(120, 0, 0);
+        playBtn.callback = function () {
             that.onPlayDown()
         };
-        this.clickables.push(o);
+        this.clickables.push(playBtn);
         this.targetPos -= 60
     }
 });
 ResultMenu.prototype.show = function () {
-    trace("-------------------");
     PauseLikeMenu.prototype.show.call(this);
-    trace("-------22222222------------");
     this.button.gotoAndPlay(0);
-    trace("---------3333333333----------");
-    for (var t = 0; t < this.dataTexts.length; ++t) {
-        this.dataTexts[t].removeFromParent();
-    }
-    trace("---------4444444444----------");
-    this.dataTexts = [];
-    var n = [LevelManager.instance.totalStars + "/" + 180, LevelManager.instance.moves.toString(), LevelManager.instance.totalScores.toString(), LevelManager.instance.bonuses.toString()];
-    for (var t = 0; t < n.length; ++t) {
-        for (var r = 0; r < 2; r++) {
-            if (r == 0)continue;
-            var tf = bitmapText(n[t], r == 0 ? BLUE_FONT : RED_FONT);
-            tf.setPositionX(r == 0 ? 30 : 520);
-            tf.setPositionY(60 + t * 55 + (r == 0 ? 0 : -20));
-            tf.setScale(r == 0 ? .7 : 1);
-            this.dataTexts.push(tf);
-            this.baseSprite.addChild(tf);
-            trace("----------5555555555555---------");
-        }
+    var strArr = [LevelManager.instance.totalStars + "/" + 180, LevelManager.instance.moves.toString(), LevelManager.instance.totalScores.toString(), LevelManager.instance.bonuses.toString()];
+    for (var i = 0; i < strArr.length; ++i) {
+        var tf = this.dataTexts[i];
+        tf.setString(strArr[i]);
     }
     SoundsManager.instance.pauseMusic();
     SoundsManager.instance.playSound("win")

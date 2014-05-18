@@ -81,13 +81,15 @@ MainLayer.prototype.onDidLoadFromCCB = function () {
 };
 
 MainLayer.prototype.onEnter = function () {
-    new MenuManager();
+//    if(!MenuManager.instance){
+        new MenuManager();
+//    }
 
     App.menuRoot = this.rootNode;
     if (!App.isShowSplashScreen) {
         App.isShowSplashScreen = true;
         MenuManager.instance.show(MenuManager.instance.splashMenu, false);
-//        MenuManager.instance.show(MenuManager.instance.winMenu, false);
+//        MenuManager.instance.show(MenuManager.instance.result, false);
     }
 
 
@@ -105,6 +107,7 @@ MainLayer.prototype.onEnter = function () {
     this.top.setPositionY(App.VIEW_TOP);
     this.bottom.setZOrder(borderZOrder + 1);
     this.top.setZOrder(borderZOrder + 1);
+
     //hud
     this.hud = new Hud(this);
     this.rootNode.addChild(this.hud.sprite, borderZOrder);
