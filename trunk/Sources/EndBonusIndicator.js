@@ -8,7 +8,7 @@ var EndBonusIndicator = GameObject.extend({
         this.cell = cell;
         this.bonusType = bonusType;
         var sp = createSpriteFromSpritesheet("bonus_new");
-        sp.setPosition(cc.p(x, y));
+        sp.setPosition(cc.p(x, y+App.VIEW_BOTTOM));
         sp.setVisible(false);
         this.delay = i;
         this.sprite = sp;

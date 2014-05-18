@@ -30,13 +30,20 @@ ClickableObject.prototype.setRect = function (e, n, r, i) {
 };
 ClickableObject.prototype.checkClick = function (x, y) {
     if (this.sprite && this.shape >= 0 && this.sprite.isVisible() && this.sprite.getParent() && this.sprite.getParent().isVisible()) {
-        var pos = this.sprite.getChildren()[0].convertToWorldSpaceAR(cc.p(0, 0));
+        var pos = this.sprite.convertToWorldSpaceAR(cc.p(0,0));
+        if(this.sprite.getChildren().length>0){
+            pos = this.sprite.getChildren()[0].convertToWorldSpaceAR(cc.p(0, 0));
+        }
         switch (this.shape) {
             case ClickableObject.CIRCLE_SHAPE:
                 return distanceBetweenPoints(pos.x + this.shift.x, pos.y + this.shift.y, x, y) <= this.radius;
             case ClickableObject.RECT_SHAPE:
-                var anc = this.sprite.getChildren()[0].getAnchorPoint();
-                pos = this.sprite.getChildren()[0].convertToWorldSpaceAR(cc.p(-anc.x * this.rect.width, -anc.y * this.rect.height));
+                var sp = this.sprite;
+                if(this.sprite.getChildren().length>0){
+                    sp = this.sprite.getChildren()[0];
+                }
+                var anc = sp.getAnchorPoint();
+                pos = sp.convertToWorldSpaceAR(cc.p(-anc.x * this.rect.width, -anc.y * this.rect.height));
                 this.rect.x = pos.x;
                 this.rect.y = pos.y;
                 return cc.rectContainsPoint(this.rect, cc.p(x, y));

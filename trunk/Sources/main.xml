@@ -15,9 +15,9 @@
 	<key>designPolicy</key>
 	<string>FIXED_WIDTH</string>
 	<key>viewWidth</key>
-	<string>768</string>
+	<string>480</string>
 	<key>viewHeight</key>
-	<string>1024</string>
+	<string>854</string>
 	<key>debug</key>
 	<string>false</string>
 </dict>
