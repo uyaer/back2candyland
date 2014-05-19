@@ -248,47 +248,47 @@ Match3Level.prototype.onLose = function () {
     var e = this.getBoundingBox();
     MenuManager.instance.show(MenuManager.instance.loseMenu, false)
 };
-Match3Level.prototype.trySpawnBonus = function (e) {
-    if (e == null)return;
-    var n = e.length;
-    if (n < Match3Level.MIN_LINE_SIZE)return;
+Match3Level.prototype.trySpawnBonus = function (fillList) {
+    if (fillList == null)return;
+    var len = fillList.length;
+    if (len < Match3Level.MIN_LINE_SIZE)return;
     var r = 0;
     var i = 0;
     var s = 0;
     var o = 0;
     var cell = null;
     var a = [];
-    for (r = 0; r < n; ++r)a.push(e[r]);
-    e = a;
+    for (r = 0; r < len; ++r)a.push(fillList[r]);
+    fillList = a;
     while (true) {
-        n = e.length;
-        if (n < Match3Level.MIN_LINE_SIZE)return;
+        len = fillList.length;
+        if (len < Match3Level.MIN_LINE_SIZE)return;
         var f = [];
-        for (r = 0; r < n; ++r)f[r] = false;
+        for (r = 0; r < len; ++r)f[r] = false;
         var l = [];
-        for (r = 0; r < n; ++r)l[r] = false;
+        for (r = 0; r < len; ++r)l[r] = false;
         var c = [];
         var h = [];
         var p = 0;
-        var d = [];
-        for (r = 0; r < n; ++r) {
-            var v = e[r].getType();
+        var cellArr = [];
+        for (r = 0; r < len; ++r) {
+            var v = fillList[r].getType();
             if (v < 0)continue;
-            s = e[r].x;
-            o = e[r].y;
+            s = fillList[r].x;
+            o = fillList[r].y;
             i = p = 0;
-            d = [];
+            cellArr = [];
             if (!f[r] && !(s - 1 >= 0 && this.cells[s - 1][o].getType() == v)) {
                 while (true) {
                     cell = s + i < this.fieldWidth ? this.cells[s + i][o] : null;
-                    var m = e.indexOf(cell);
+                    var m = fillList.indexOf(cell);
                     if (cell && cell.getType() == v && m != -1) {
                         ++p;
-                        d.push(cell);
+                        cellArr.push(cell);
                         f[m] = true
                     } else {
                         if (p >= Match3Level.MIN_LINE_SIZE) {
-                            c.push(d);
+                            c.push(cellArr);
                             h.push(p)
                         }
                         break
@@ -297,18 +297,18 @@ Match3Level.prototype.trySpawnBonus = function (e) {
                 }
             }
             i = p = 0;
-            d = [];
+            cellArr = [];
             if (!l[r] && !(o - 1 >= 0 && this.cells[s][o - 1].getType() == v)) {
                 while (true) {
                     cell = o + i < this.fieldHeight ? this.cells[s][o + i] : null;
-                    var m = e.indexOf(cell);
+                    var m = fillList.indexOf(cell);
                     if (cell && cell.getType() == v && m != -1) {
                         ++p;
-                        d.push(cell);
+                        cellArr.push(cell);
                         l[m] = true
                     } else {
                         if (p >= Match3Level.MIN_LINE_SIZE) {
-                            c.push(d);
+                            c.push(cellArr);
                             h.push(p)
                         }
                         break
@@ -319,10 +319,10 @@ Match3Level.prototype.trySpawnBonus = function (e) {
         }
         var g = c.length;
         for (r = 0; r < g; ++r) {
-            d = c[r];
-            var y = d.length;
-            for (i = 0; i < y; ++i) {
-                cell = d[i];
+            cellArr = c[r];
+            var cellLen = cellArr.length;
+            for (i = 0; i < cellLen; ++i) {
+                cell = cellArr[i];
                 for (var b = 0; b < g; b++) {
                     if (r != b) {
                         var w = c[b];
@@ -349,17 +349,17 @@ Match3Level.prototype.trySpawnBonus = function (e) {
             }
         }
         if (T != -1 && N != -1) {
-            d = c[N];
-            y = d.length;
-            for (r = 0; r < y; ++r) {
-                m = e.indexOf(d[r]);
-                e.splice(m, 1)
+            cellArr = c[N];
+            cellLen = cellArr.length;
+            for (r = 0; r < cellLen; ++r) {
+                m = fillList.indexOf(cellArr[r]);
+                fillList.splice(m, 1)
             }
-            var bonusType = this.getBonusByMatch(y);
-            var L = y <= 4 ? 3 : y <= 5 ? 4 : 5;
-            this.spawnBonus(bonusType, d[0], d[L])
+            var bonusType = this.getBonusByMatch(cellLen);
+            var L = cellLen <= 4 ? 3 : cellLen <= 5 ? 4 : 5;
+            this.spawnBonus(bonusType, cellArr[0], cellArr[L])
         }
-        if (g <= 1 || e.length < Match3Level.MIN_LINE_SIZE)break
+        if (g <= 1 || fillList.length < Match3Level.MIN_LINE_SIZE)break
     }
 };
 Match3Level.prototype.getBonusByMatch = function (e) {

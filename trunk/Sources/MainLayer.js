@@ -89,7 +89,7 @@ MainLayer.prototype.onEnter = function () {
     if (!App.isShowSplashScreen) {
         App.isShowSplashScreen = true;
         MenuManager.instance.show(MenuManager.instance.splashMenu, false);
-//        MenuManager.instance.show(MenuManager.instance.result, false);
+//        MenuManager.instance.show(MenuManager.instance.winMenu, false);
     }
 
 

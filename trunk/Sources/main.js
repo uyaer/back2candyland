@@ -127,6 +127,7 @@ var ccb_resources = [
 ];
 
 require("JSBHelper.js");
+require("md5.js");
 
 require("App.js");
 require("Data.js");

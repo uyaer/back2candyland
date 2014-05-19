@@ -89,12 +89,14 @@ LevelManager.prototype.restartLevel = function () {
     this.prepareToLoadLevel(this.currentLevel);
 };
 LevelManager.prototype.save = function () {
-    var str = {"version": this.version, "moves": this.moves, "bonuses": this.bonuses};
+
     var t = [];
     for (var i = 0; i < this.data.length; ++i) {
         var r = this.data[i];
         t.push({c: r.state, s: r.stars, p: r.score})
     }
+    var verifyKey = MD5(JSON.stringify(t)+"uyaer20111111");
+    var str = {"version": verifyKey, "moves": this.moves, "bonuses": this.bonuses};
     str.levels = t;
     sys.localStorage.setItem("save_"+App.episode, JSON.stringify(str));
     trace("save data.......");
@@ -107,10 +109,11 @@ LevelManager.prototype.load = function () {
     saveData = JSON.parse(saveData);
     var t = saveData.levels;
     if (!t)return;
-//    if (this.version != saveData.version) {
-////        sys.localStorage.clear();
-//        return;
-//    }
+    var verifyKey = MD5(JSON.stringify(t)+"uyaer20111111");
+    if (verifyKey != saveData.version) {
+        trace("=========== data has changed!");
+        return;
+    }
     this.moves = Math.max(this.moves, saveData.moves);
     this.bonuses = Math.max(this.bonuses, saveData.bonuses);
     for (var i = 0; i < t.length; ++i) {

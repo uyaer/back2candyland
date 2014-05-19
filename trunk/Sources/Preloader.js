@@ -80,9 +80,9 @@ Preloader.prototype.init = function () {
     var basePath = App.episode <= 1 ? "myassets/tutorial/" : "myassets/tutorial/episode2/";
     this.loadResArr = [
         {src: "myassets/preloader/zibbo_logo.png", type: Preloader.TYPE_TEXTURE},
-        {src: ["myassets/map/map1.jpg", "myassets/map/map_ep1_3.png", "myassets/map/map_ep2_3.png"][index], type: Preloader.TYPE_TEXTURE, id: "map3"},
-        {src: ["myassets/map/map2.jpg", "myassets/map/map_ep1_2.png", "myassets/map/map_ep2_2.png"][index], type: Preloader.TYPE_TEXTURE, id: "map2"},
-        {src: ["myassets/map/map3.jpg", "myassets/map/map_ep1_1.png", "myassets/map/map_ep2_1.png"][index], type: Preloader.TYPE_TEXTURE, id: "map1"},
+        {src: ["myassets/map/map_ep1_3.png", "myassets/map/map_ep1_3.png", "myassets/map/map_ep2_3.png"][index], type: Preloader.TYPE_TEXTURE, id: "map3"},
+        {src: ["myassets/map/map_ep1_2.png", "myassets/map/map_ep1_2.png", "myassets/map/map_ep2_2.png"][index], type: Preloader.TYPE_TEXTURE, id: "map2"},
+        {src: ["myassets/map/map_ep1_1.png", "myassets/map/map_ep1_1.png", "myassets/map/map_ep2_1.png"][index], type: Preloader.TYPE_TEXTURE, id: "map1"},
         {src: "myassets/bar.png", type: Preloader.TYPE_TEXTURE},
         {src: "sprites/art.plist", type: Preloader.TYPE_PLIST},
         {src: App.episode == 2 ? "myassets/back2.png" : "myassets/back1.png", type: Preloader.TYPE_TEXTURE, id: "back1"},
