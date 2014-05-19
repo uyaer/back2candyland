@@ -44,7 +44,7 @@ Menu.prototype.restartLevel = function () {
     LevelManager.instance.restartLevel();
 };
 Menu.prototype.loadMainMenu = function () {
-    MenuManager.instance.show(MenuManager.instance.map);
+    MenuManager.instance.show(MenuManager.instance.mainMenu);
 };
 
 
@@ -78,9 +78,9 @@ var MapMenu = Menu.extend({
 
         var totalOffY = 0;
         var arr = [
-            [0, -10, -20],
+            [0, -10, -13],
             [0, -42, -44],
-            [0, -39, -48]
+            [0, -39, -41]
         ];
         //添加地图
         for (var i = 1; i <= 3; ++i) {
@@ -201,7 +201,7 @@ MapMenu.prototype.show = function () {
         this.firstShow = false;
         this.scrollSprite.setPositionY(App.WIN_H - this.height);
         //TODO  这里应该是4秒
-        this.scroll(0, 0.5);
+        this.scroll(0, 2.5);
     } else if (this.isLevelUnlocking) {
         var btn = this.buttons[this.levelToUnlock];
         btn.runAction(cc.Sequence.create(
@@ -273,7 +273,7 @@ MapMenu.prototype.update = function (dt) {
     for (var i = 0; i < LevelManager.LEVEL_AMOUNT; ++i) {
         var btn = this.buttons[i];
         var s = btn.convertToWorldSpaceAR(cc.p(0, 0));
-        btn.setVisible(i == this.levelToUnlock || LevelManager.instance.data[i].state == LevelData.CLOSED_STATE && !(s.y > App.ACTUAL_H + 300 || s.y < -200));
+        btn.setVisible(i == this.levelToUnlock || LevelManager.instance.data[i].state == LevelData.CLOSED_STATE && !(s.y > App.WIN_H + 50 || s.y < -50));
     }
     this.pointer.update(dt);
 };
@@ -323,7 +323,7 @@ MapMenu.prototype.scroll = function (toY, time) {
     this.scrollSprite.stopAllActions();
     this.speed = 0;
     this.scrollSprite.runAction(cc.Sequence.create(
-        cc.MoveTo.create(time, cc.p(0, this.limitY(toY))),
+        cc.EaseExponentialOut.create(cc.MoveTo.create(time, cc.p(0, this.limitY(toY)))),
         cc.CallFunc.create(function () {
             that.stopMove();
         })
@@ -634,7 +634,7 @@ var MainMenu = CharMenu.extend({
         var root = cc.Node.create();
         this.sprite = root;
         this.sprite.retain();
-        var colorbg = cc.LayerGradient.create(App.episode == 2 ? hexC4B(0xBFA8F8) : hexC4B(0xace5ff), App.episode == 2 ? hexC4B(0xdaa2d3) : hexC4B(0xa893de), cc.p(1, 0));
+        var colorbg = cc.LayerGradient.create(App.episode == 1 ? hexC4B(0xBFA8F8) : hexC4B(0xace5ff), App.episode == 1 ? hexC4B(0xdaa2d3) : hexC4B(0xa893de), cc.p(1, 0));
         root.addChild(colorbg);
         this.back = createBitmap("main_menu");
         this.back.setAnchorPoint(cc.p(0, 0));
@@ -654,7 +654,7 @@ var MainMenu = CharMenu.extend({
             animNode.addAction(animNode.totalFrames - 1, 0, -1);
             this.blinksDelays.push(this.getBlinkDelay(true))
         }
-        this.crossButton = createSpriteFromSpritesheet("play_episode"+(App.episode == 2?"1":"2"));
+        this.crossButton = createSpriteFromSpritesheet("play_episode" + (App.episode == 2 ? "1" : "2"));
         root.addChild(this.crossButton);
 
 
@@ -701,9 +701,9 @@ var MainMenu = CharMenu.extend({
     }
 });
 MainMenu.prototype.onEpisodeDown = function () {
-    if(App.episode==1){
+    if (App.episode == 1) {
         App.episode = 2;
-    }else {
+    } else {
         App.episode = 1;
     }
     cc.Director.getInstance().replaceScene(LoaderLayer.getScene());
@@ -753,7 +753,7 @@ MainMenu.prototype.onResize = function () {
         this.moreGames.sprite.setPositionY(this.button.getPositionY() + 50);
     }
     if (this.crossButton) {
-        this.crossButton.setPosition(cc.p(320, App.WIN_H*0.42));
+        this.crossButton.setPosition(cc.p(320, App.WIN_H * 0.42));
     }
 };
 MainMenu.prototype.show = function () {
@@ -761,17 +761,21 @@ MainMenu.prototype.show = function () {
     this.button.gotoAndPlay(0);
     this.setPlayButtonTime(true);
 
-    var rotAnim = cc.RotateBy.create(0.35,60);
-    var scaAnim = cc.ScaleBy.create(0.35,1.05);
-    this.crossButton.setRotation(-30);
     this.crossButton.stopAllActions();
-    this.crossButton.runAction(cc.RepeatForever.create(
-        cc.Spawn.create(
-            cc.Sequence.create(rotAnim,rotAnim.reverse()),
-            cc.Sequence.create(scaAnim,scaAnim.reverse())
-        )
-    ));
-
+    if (App.episode == 1 && LevelManager.instance.lastOpened < LevelManager.LEVEL_AMOUNT - 1) {
+        this.crossButton.setVisible(false);
+    } else {
+        this.crossButton.setVisible(true);
+        var rotAnim = cc.RotateBy.create(0.35, 60);
+        var scaAnim = cc.ScaleBy.create(0.35, 1.2);
+        this.crossButton.setRotation(-30);
+        this.crossButton.runAction(cc.RepeatForever.create(
+            cc.Spawn.create(
+                cc.Sequence.create(rotAnim, rotAnim.reverse()),
+                cc.Sequence.create(scaAnim, scaAnim.reverse())
+            )
+        ));
+    }
 
     //隐藏广告
     App.hideBannerAd();
@@ -940,7 +944,7 @@ var WinMenu = CharMenu.extend({
         var root = cc.Node.create();
         this.sprite = root;
         this.sprite.retain();
-        root.setPositionY(App.GAME_H - 300);
+        root.setPositionY(App.GAME_H - 250);
         var gray = createSpriteFromSpritesheet("gray");
         gray.setAnchorPoint(cc.p(0, 0));
         var rect = gray.getBoundingBox();
@@ -981,7 +985,7 @@ var WinMenu = CharMenu.extend({
         root.addChild(this.button);
         this.button.addAction(97, 0, 0);
         this.button.addAction(106, 0, -1);
-        this.button.setPosition(cc.p(450, -140));
+        this.button.setPosition(cc.p(320, -100));
         this.button.setScale(0.75);
         this.button.addAction(this.button.totalFrames - 1, 1, 0);
         var a = new ClickableObject(this.button);
@@ -992,7 +996,7 @@ var WinMenu = CharMenu.extend({
         this.clickables.push(a);
         var f = new ButtonObject(5, function (e) {
             that.restarAndUnlock(e)
-        }, root, App.GAME_W / 2, -258);
+        }, root, App.GAME_W *0.25, -208);
         this.animatedButtons.push(f);
         this.clickables.push(f)
     }
@@ -1125,6 +1129,7 @@ SplashScreen.prototype.show = function () {
         cc.DelayTime.create(0.1),
         cc.ScaleTo.create(0.3, 1.2),
         cc.ScaleTo.create(0.4, 1),
+        cc.DelayTime.create(2),
         cc.CallFunc.create(function () {
             that.onAnimEnd();
         })

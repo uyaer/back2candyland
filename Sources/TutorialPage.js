@@ -79,7 +79,11 @@ TutorialPage.prototype.removeSprite = function () {
 var FirstGroupTapTutorial = TutorialPage.extend({
     ctor: function () {
         this._super();
-        if (App.episode <= 1)this.tapCells.push(cc.p(5, 1), cc.p(5, 2), cc.p(5, 3), cc.p(4, 2), cc.p(6, 2), cc.p(6, 3)); else this.tapCells.push(cc.p(2, 5), cc.p(3, 4), cc.p(3, 5), cc.p(4, 4), cc.p(4, 5), cc.p(4, 6), cc.p(5, 6));
+        if (App.episode <= 1) {
+            this.tapCells.push(cc.p(5, 1), cc.p(5, 2), cc.p(5, 3), cc.p(4, 2), cc.p(6, 2), cc.p(6, 3));
+        } else {
+            this.tapCells.push(cc.p(2, 5), cc.p(3, 4), cc.p(3, 5), cc.p(4, 4), cc.p(4, 5), cc.p(4, 6), cc.p(5, 6));
+        }
         var root = cc.Sprite.create();
         var n = createBitmap("tutorial1");
         n.setAnchorPoint(cc.p(0, 0));
@@ -91,7 +95,7 @@ var FirstGroupTapTutorial = TutorialPage.extend({
         tf.setAnchorPoint(cc.p(0, 0.5));
         tf.setScale(0.9);
         tf.setPositionX(99 + 50 + (App.episode <= 1 ? 0 : -85));
-        tf.setPositionY(340 - 10 + (App.episode <= 1 ? 0 : -120));
+        tf.setPositionY(340 - 10 + (App.episode <= 1 ? 0 : 200));
         root.addChild(tf);
         this.hideDelay = .15;
         this.showDelay = .5;
@@ -116,8 +120,8 @@ var HighValueTapTutorial = TutorialPage.extend({
         var r = bitmapText("Some jellies give\nadditional points", RED_FONT);
         r.setAnchorPoint(cc.p(0, 0.5));
         r.setScale(0.8);
-        r.setPositionX(99 + (App.episode <= 1 ? 0 : 90));
-        r.setPositionY(400 + (App.episode <= 1 ? 0 : 50));
+        r.setPositionX(99 + (App.episode <= 1 ? 0 : 10));
+        r.setPositionY(400 + (App.episode <= 1 ? 0 : -50));
         root.addChild(r);
         var r = bitmapText("Tap anywhere to continue", BLUE_FONT);
         r.setAnchorPoint(cc.p(0, 0.5));
@@ -153,8 +157,8 @@ var LineTapTutorial = TutorialPage.extend({
         root.addChild(n);
         var r = bitmapText("   remove line\nto create bonus", RED_FONT);
         r.setAnchorPoint(cc.p(0, 0.5));
-        r.setPositionX(130 + (App.episode <= 1 ? 0 : 55));
-        r.setPositionY(340 + 50 + (App.episode <= 1 ? 0 : 85));
+        r.setPositionX(130 + (App.episode <= 1 ? 0 : 25));
+        r.setPositionY(340 + 50 + (App.episode <= 1 ? 0 : -200));
         r.setScale(0.85);
         root.addChild(r);
         this.hideDelay = .15;
@@ -181,7 +185,7 @@ var BonusTapTutorial = TutorialPage.extend({
         t.addChild(n);
         var r = bitmapText("activate bonus", RED_FONT);
         r.setAnchorPoint(cc.p(0, 0.5));
-        r.setPosition(cc.p(35 + (App.episode <= 1 ? 0 : 45), 330));
+        r.setPosition(cc.p(35 + (App.episode <= 1 ? 0 : 75), 330));
         r.setScale(0.7);
         t.addChild(r);
         this.hideDelay = .15;
@@ -309,7 +313,7 @@ var BonusComboTapTutorial = TutorialPage.extend({
         var r = bitmapText("  Combine bonuses\nto enchance them!", RED_FONT);
         r.setAnchorPoint(cc.p(0, 0.5));
         r.setPositionX(210 + (App.episode <= 1 ? 0 : -90));
-        r.setPositionY(340 + 67 + (App.episode <= 1 ? 0 : -110));
+        r.setPositionY(340 + 67 + (App.episode <= 1 ? 0 : 10));
         r.setScale(0.7);
         t.addChild(r);
         this.hideDelay = .15;
@@ -336,7 +340,7 @@ var ComboInfoTutorial = TutorialPage.extend({
         var r = bitmapText(" Combine bonuses\nto enchance them!", RED_FONT);
         r.setAnchorPoint(cc.p(0, 0.5));
         r.setScale(0.95);
-        r.setPosition(cc.p(40, App.GAME_H-130));
+        r.setPosition(cc.p(40, App.GAME_H - 130));
         root.addChild(r);
         var i = -40;
         var s = 0;

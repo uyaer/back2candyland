@@ -4,6 +4,8 @@ var LoaderLayer = cc.Layer.extend({
         this.init();
     },
     init: function () {
+        SoundsManager.instance.stopAll();
+
         var size = cc.Director.getInstance().getWinSize();
         App.WIN_W = size.width;
         App.WIN_H = size.height;
