@@ -944,7 +944,7 @@ var WinMenu = CharMenu.extend({
         var root = cc.Node.create();
         this.sprite = root;
         this.sprite.retain();
-        root.setPositionY(App.GAME_H - 250);
+        root.setPositionY(App.GAME_H - 250 + (App.WIN_H / App.WIN_W - 1.42) * 350);
         var gray = createSpriteFromSpritesheet("gray");
         gray.setAnchorPoint(cc.p(0, 0));
         var rect = gray.getBoundingBox();
@@ -996,7 +996,7 @@ var WinMenu = CharMenu.extend({
         this.clickables.push(a);
         var f = new ButtonObject(5, function (e) {
             that.restarAndUnlock(e)
-        }, root, App.GAME_W *0.25, -208);
+        }, root, App.GAME_W * 0.25, -208);
         this.animatedButtons.push(f);
         this.clickables.push(f)
     }
@@ -1087,8 +1087,13 @@ WinMenu.prototype.stopStarMove = function () {
     this.starsShowedAmount++;
     this.starShowLeft--;
     if (this.starShowLeft <= 0) {
-        //TODO  添加广告
-        App.showCpAd();
+        //TODO 显示广告
+        if (App.episode <= 1 && LevelManager.instance.lastOpened < 10) {
+            return;
+        }
+        if (Math.random() < 0.2) {
+            App.showCpAd();
+        }
     }
 };
 WinMenu.prototype.update = function (t) {

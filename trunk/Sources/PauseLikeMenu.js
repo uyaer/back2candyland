@@ -326,33 +326,31 @@ var CreditsMenu = PauseLikeMenu.extend({
         this._super();
         var t = this;
         this.dataTexts = [];
-        s = bitmapText("Credits", BLUE_FONT);
-        s.setPosition(cc.p(App.WIN_W / 2, 408));
-        this.baseSprite.addChild(s);
+        var titleTF = bitmapText("Credits", BLUE_FONT);
+        titleTF.setPosition(cc.p(App.WIN_W / 2, 408));
+        this.baseSprite.addChild(titleTF);
         this.backSprite.setScaleY(1.8);
-        var n = ["art:", "code:", "sound:", "thanks\nto:"];
-        for (var r = 0; r < n.length; ++r) {
-            for (var i = 0; i < 2; i++) {
-                if (i == 1)continue;
-                var s = bitmapText(i == 0 ? n[r] : getInt(1e6).toString(), i == 0 ? BLUE_FONT : RED_FONT);
-                s.setPosition(cc.p(i == 0 ? 10 : 520, 60 + r * 55 + (i == 0 ? 0 : -20)));
-                s.setScale(0.65);
-                this.baseSprite.addChild(s)
-            }
+
+        var uyaerLogo = createBitmap("uyaer");
+        uyaerLogo.setPosition(cc.p(App.WIN_W / 2, 250));
+        this.baseSprite.addChild(uyaerLogo);
+        var conTF = bitmapText("http://www.uyaer.com", RED_FONT);
+        conTF.setPosition(cc.p(App.WIN_W / 2, 150));
+        conTF.setScale(0.65);
+        this.baseSprite.addChild(conTF);
+        var uyaerBtn = new ClickableObject(uyaerLogo);
+        uyaerBtn.setCCRect(uyaerLogo.getBoundingBox());
+        uyaerBtn.callback = function () {
+            App.openURL();
         }
-        this.dataTexts = [];
-        var n = ["Alexey Testov", "Andriy Vinchkovskiy", "alexander ahura", "           sergey batishchev\n         konstantin boronenkov\n  all flashgamedev.ru testers!"];
-        for (var r = 0; r < n.length; ++r) {
-            for (var i = 0; i < 2; i++) {
-                if (i == 0)continue;
-                var s = bitmapText(n[r], i == 0 ? BLUE_FONT : RED_FONT);
-                s.setPositionX(390 + (r == 3 ? -50 : 0));
-                s.setPositionY(70 + r * 55 + (i == 0 ? 0 : -20) + (r == 3 ? 10 : 0));
-                s.setScaleX(r == 3 ? .6 : .75);
-                this.dataTexts.push(s);
-                this.baseSprite.addChild(s)
-            }
+        this.clickables.push(uyaerBtn);
+        var conBtn = new ClickableObject(conTF);
+        conBtn.setCCRect(conTF.getBoundingBox());
+        conBtn.callback = function () {
+            App.openURL();
         }
+        this.clickables.push(conBtn);
+
         this.button = new AnimatedNode(AnimationManager.instance.getAnimation("button"), 1 / 30, null);
         this.baseSprite.addChild(this.button);
         this.button.addAction(97, 0, 0);

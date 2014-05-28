@@ -49,3 +49,13 @@ App.hideBannerAd = function () {
 App.closeApp = function () {
     cc.Director.getInstance().end();
 }
+App.openURL = function(url){
+    if(arguments.length==0){
+        url = "http://www.uyaer.com";
+    }
+    if(sys.os.toLowerCase()=="android"){
+        SendMessageToNative("openURL", {"url": url});
+    }else{
+        trace("can't open webview");
+    }
+}
