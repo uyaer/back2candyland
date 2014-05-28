@@ -13,6 +13,7 @@ var Preloader = cc.Layer.extend({
         this.loadResArr = [];
         this.loadTotalLen = 0;
         this.loadedCount = 0;
+        this.isLoadOver = false;
         this.init();
     }
 });
@@ -88,6 +89,7 @@ Preloader.prototype.init = function () {
         {src: App.episode == 2 ? "myassets/back2.png" : "myassets/back1.png", type: Preloader.TYPE_TEXTURE, id: "back1"},
         {src: App.episode != 2 ? "myassets/main_menu.png" : "myassets/main_menu_ep2.png", type: Preloader.TYPE_TEXTURE, id: "main_menu"},
         {src: "myassets/menu_back.png", type: Preloader.TYPE_TEXTURE},
+        {src: "myassets/uyaer.png", type: Preloader.TYPE_TEXTURE},
         {src: "myassets/logo_top.png", type: Preloader.TYPE_TEXTURE},
         {src: "myassets/logo.txt", type: Preloader.TYPE_JSON},
         {src: "myassets/button.txt", type: Preloader.TYPE_JSON},
@@ -162,6 +164,7 @@ Preloader.prototype.init = function () {
 
 };
 Preloader.prototype.load = function () {
+    this.isLoadOver = false;
     if (this.loadResArr.length > 0) {
         this.loadedCount++;
         var resObj = this.loadResArr.splice(0, 1)[0];
@@ -196,6 +199,7 @@ Preloader.prototype.load = function () {
 
         setTimeout(this.load, 1, this);
     } else {
+        this.isLoadOver = true;
         this.onLoadComplete();
     }
 }
@@ -215,6 +219,7 @@ Preloader.prototype.onLoadComplete = function () {
 
     AnimManager.instance.init();
 
+    trace("  assets ... load  over!!!!!!!!!!!!");
 
     this.onProgress();
     this.showButton();
@@ -232,7 +237,7 @@ Preloader.prototype.showButton = function () {
 Preloader.prototype.onDown = function (x, y) {
     if (!this.loadedMain) {
         var rect = this.playButton.getBoundingBox();
-        if (x >= rect.x && x <= rect.x + rect.width && y >= y && y <= rect.y + rect.height) {
+        if (this.playButton.isVisible() && this.isLoadOver && x >= rect.x && x <= rect.x + rect.width && y >= y && y <= rect.y + rect.height) {
             this.loadedMain = true;
             this.onLoadOverCallback();
         }
@@ -240,9 +245,10 @@ Preloader.prototype.onDown = function (x, y) {
 };
 
 Preloader.prototype.onProgress = function () {
-    var pre = this.loadedCount / this.loadTotalLen;
-    pre = limit(pre, 0, 1);
-    var rect = cc.rect(0, 0, limit(this.barSize.width * pre, 1, this.barSize.width), this.barSize.height);
+    var per = this.loadedCount / this.loadTotalLen;
+    trace("has load assets:" + (int(per * 10000) / 100) + "%");
+    per = limit(per, 0, 1);
+    var rect = cc.rect(0, 0, limit(this.barSize.width * per, 1, this.barSize.width), this.barSize.height);
     this.bar.setTextureRect(rect);
 };
 

@@ -11,6 +11,10 @@ var LoaderLayer = cc.Layer.extend({
         App.WIN_H = size.height;
         App.VIEW_BOTTOM = (App.WIN_H - App.GAME_H) / 2;
         App.VIEW_TOP = App.WIN_H - App.VIEW_BOTTOM;
+        if(App.VIEW_BOTTOM<85){
+            App.VIEW_BOTTOM = (App.WIN_H - App.GAME_H) - 85;
+            App.VIEW_TOP = App.WIN_H - 85;
+        }
         App.SHIFT_H = App.VIEW_BOTTOM;
 
         App.isShowSplashScreen = false;

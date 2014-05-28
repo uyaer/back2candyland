@@ -28,6 +28,10 @@ ClickableObject.prototype.setRect = function (e, n, r, i) {
     this.shape = ClickableObject.RECT_SHAPE;
     this.rect = cc.rect(e, n, r, i)
 };
+ClickableObject.prototype.setCCRect = function (rect) {
+    this.shape = ClickableObject.RECT_SHAPE;
+    this.rect = rect;
+};
 ClickableObject.prototype.checkClick = function (x, y) {
     if (this.sprite && this.shape >= 0 && this.sprite.isVisible() && this.sprite.getParent() && this.sprite.getParent().isVisible()) {
         var pos = this.sprite.convertToWorldSpaceAR(cc.p(0,0));
@@ -52,7 +56,7 @@ ClickableObject.prototype.checkClick = function (x, y) {
     return false;
 };
 ClickableObject.prototype.onClick = function () {
-    if (this.callback) {
+    if (this.callback && this.sprite.isVisible()) {
         var e = Date.now();
         if (Math.abs(e - this.lastClickTime) > .3) {
             this.lastClickTime = e;
@@ -101,7 +105,10 @@ MoreGamesButton.prototype.onLogoClick = function () {
     var that = this;
     this.sprite.runAction(cc.Sequence.create(
         cc.Spawn.create(cc.ScaleTo.create(0.2, 1.2 * that.initScale), cc.FadeIn.create(0.2)),
-        cc.ScaleTo.create(0.2, that.initScale)
+        cc.ScaleTo.create(0.2, that.initScale),
+        cc.CallFunc.create(function(){
+            App.openURL();
+        })
     ));
 };
 MoreGamesButton.prototype.checkClick = function (x, y) {

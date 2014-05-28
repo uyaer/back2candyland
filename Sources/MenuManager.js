@@ -31,6 +31,12 @@ MenuManager.prototype.isOnMap = function () {
 MenuManager.prototype.isOnPause = function () {
     return this.current == this.pause;
 };
+MenuManager.prototype.isOnWin = function () {
+    return this.current == this.winMenu;
+};
+MenuManager.prototype.isOnLose = function () {
+    return this.current == this.loseMenu;
+};
 
 MenuManager.prototype.show = function (targetMenu, isShowTransistion) {
     if (arguments.length == 1) {

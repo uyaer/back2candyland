@@ -93,6 +93,7 @@ function isIntEqual(num1, num2) {
 }
 
 function trace(msg) {
+    return;
     if (arguments.length > 1) {
         var log = "";
         for (var i = 0; i < arguments.length; i++) {

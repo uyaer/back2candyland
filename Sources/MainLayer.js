@@ -63,7 +63,7 @@ MainLayer.prototype.onDidLoadFromCCB = function () {
         this.lastBackKeyClicked = Date.now();
         if (dt < 200)return;
         if (MenuManager.instance.isOnTutorial())return;
-        if (Match3Level.instance.target) { //肯定在玩游戏中
+        if (Match3Level.instance.target && !MenuManager.instance.isOnWin() && !MenuManager.instance.isOnLose()) { //肯定在玩游戏中
             if (MenuManager.instance.isOnPause()) { //已经暂停了
                 MenuManager.instance.pause.onPlayDown();
             } else {
@@ -73,7 +73,7 @@ MainLayer.prototype.onDidLoadFromCCB = function () {
             if (MenuManager.instance.isOnMap()) {
                 MenuManager.instance.map.loadMain();
             } else if (MenuManager.instance.isOnMain()) {
-                JSBHelper.AddSelector("closeApp",App.closeApp);
+                JSBHelper.AddSelector("closeApp", App.closeApp);
                 SendMessageToNative("confirmClose", null);
             }
         }
@@ -81,9 +81,7 @@ MainLayer.prototype.onDidLoadFromCCB = function () {
 };
 
 MainLayer.prototype.onEnter = function () {
-//    if(!MenuManager.instance){
-        new MenuManager();
-//    }
+    new MenuManager();
 
     App.menuRoot = this.rootNode;
     if (!App.isShowSplashScreen) {
