@@ -509,7 +509,7 @@ var CharMenu = Menu.extend({
         this.char.addAction(352, 0, -1);
         this.char.addAction(198, 1, 49);
         this.char.addAction(285, 1, 49);
-        this.char.addAction(429, 1, 49)
+        this.char.addAction(429, 1, 49);
     }
 });
 CharMenu.prototype.onCharDown = function (e) {
@@ -689,6 +689,10 @@ var MainMenu = CharMenu.extend({
         root.addChild(this.logo);
         this.moreGames = new MoreGamesButton(root, App.GAME_W / 2, 0, 1);
         this.clickables.push(this.moreGames);
+        //share
+        this.shareBtn = new ShareButton(root, App.GAME_W / 2, 50, 0.65, SHARE_TYPE_NORMAL);
+        this.clickables.push(this.shareBtn);
+
         if (this.crossButton) {
             var crossBtn = new ClickableObject(this.crossButton);
             crossBtn.setCircle(85, 0, 0);
@@ -999,6 +1003,9 @@ var WinMenu = CharMenu.extend({
         }, root, App.GAME_W * 0.25, -208);
         this.animatedButtons.push(f);
         this.clickables.push(f)
+        //share
+        this.shareBtn = new ShareButton(root, App.GAME_W / 2, -350, 0.9, SHARE_TYPE_WIN);
+        this.clickables.push(this.shareBtn);
     }
 });
 WinMenu.prototype.restarAndUnlock = function (e) {

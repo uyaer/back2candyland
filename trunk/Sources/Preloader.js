@@ -89,6 +89,7 @@ Preloader.prototype.init = function () {
         {src: App.episode == 2 ? "myassets/back2.png" : "myassets/back1.png", type: Preloader.TYPE_TEXTURE, id: "back1"},
         {src: App.episode != 2 ? "myassets/main_menu.png" : "myassets/main_menu_ep2.png", type: Preloader.TYPE_TEXTURE, id: "main_menu"},
         {src: "myassets/menu_back.png", type: Preloader.TYPE_TEXTURE},
+        {src: "myassets/share.png", type: Preloader.TYPE_TEXTURE},
         {src: "myassets/uyaer.png", type: Preloader.TYPE_TEXTURE},
         {src: "myassets/logo_top.png", type: Preloader.TYPE_TEXTURE},
         {src: "myassets/logo.txt", type: Preloader.TYPE_JSON},

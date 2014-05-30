@@ -32,30 +32,35 @@ App.episode = 1;
 
 
 App.showCpAd = function () {
-    if (sys.os.toLowerCase() == "android") {
-        SendMessageToNative("showCpAd", null);
-    }
+//    if (sys.os.toLowerCase() == "android") {
+//        SendMessageToNative("showCpAd", null);
+//    }
 }
 App.showBannerAd = function () {
-    if (sys.os.toLowerCase() == "android") {
+    if (sys.os.toLowerCase() == "android" || sys.os.toLowerCase() == "ios") {
         SendMessageToNative("showBannerAd", {"isShow": "1"});
     }
 }
 App.hideBannerAd = function () {
-    if (sys.os.toLowerCase() == "android") {
+    if (sys.os.toLowerCase() == "android" || sys.os.toLowerCase() == "ios") {
         SendMessageToNative("showBannerAd", {"isShow": "0"});
     }
 }
 App.closeApp = function () {
     cc.Director.getInstance().end();
 }
-App.openURL = function(url){
-    if(arguments.length==0){
+App.openURL = function (url) {
+    if (arguments.length == 0) {
         url = "http://www.uyaer.com";
     }
-    if(sys.os.toLowerCase()=="android"){
+    if (sys.os.toLowerCase() == "android" || sys.os.toLowerCase() == "ios") {
         SendMessageToNative("openURL", {"url": url});
-    }else{
+    } else {
         trace("can't open webview");
+    }
+}
+App.openShare = function (type) {
+    if (sys.os.toLowerCase() == "android" || sys.os.toLowerCase() == "ios") {
+        SendMessageToNative("openShare", {"type": type});
     }
 }
