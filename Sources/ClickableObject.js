@@ -34,8 +34,8 @@ ClickableObject.prototype.setCCRect = function (rect) {
 };
 ClickableObject.prototype.checkClick = function (x, y) {
     if (this.sprite && this.shape >= 0 && this.sprite.isVisible() && this.sprite.getParent() && this.sprite.getParent().isVisible()) {
-        var pos = this.sprite.convertToWorldSpaceAR(cc.p(0,0));
-        if(this.sprite.getChildren().length>0){
+        var pos = this.sprite.convertToWorldSpaceAR(cc.p(0, 0));
+        if (this.sprite.getChildren().length > 0) {
             pos = this.sprite.getChildren()[0].convertToWorldSpaceAR(cc.p(0, 0));
         }
         switch (this.shape) {
@@ -43,7 +43,7 @@ ClickableObject.prototype.checkClick = function (x, y) {
                 return distanceBetweenPoints(pos.x + this.shift.x, pos.y + this.shift.y, x, y) <= this.radius;
             case ClickableObject.RECT_SHAPE:
                 var sp = this.sprite;
-                if(this.sprite.getChildren().length>0){
+                if (this.sprite.getChildren().length > 0) {
                     sp = this.sprite.getChildren()[0];
                 }
                 var anc = sp.getAnchorPoint();
@@ -106,7 +106,7 @@ MoreGamesButton.prototype.onLogoClick = function () {
     this.sprite.runAction(cc.Sequence.create(
         cc.Spawn.create(cc.ScaleTo.create(0.2, 1.2 * that.initScale), cc.FadeIn.create(0.2)),
         cc.ScaleTo.create(0.2, that.initScale),
-        cc.CallFunc.create(function(){
+        cc.CallFunc.create(function () {
             App.openURL();
         })
     ));
@@ -120,6 +120,53 @@ MoreGamesButton.prototype.checkClick = function (x, y) {
         return x >= pos.x && x <= pos.x + i && y >= pos.y && y <= pos.y + s
     }
     return false
+};
+
+/**
+ * =================================================================================
+ * @type {void|Function|*}
+ */
+var ShareButton = ClickableObject.extend({
+    ctor: function (parent, x, y, scale, type) {
+        this._super();
+        var that = this;
+        this.initScale = scale;
+        this.type = type;
+        var sp = createBitmap("share");
+        if (sp) {
+            sp.setScale(scale);
+            sp.setPosition(cc.p(x, y));
+            parent.addChild(sp);
+            this.sprite = sp;
+            this.callback = function () {
+                return that.onLogoClick()
+            }
+        }
+    }
+});
+SHARE_TYPE_NORMAL = 0;
+SHARE_TYPE_WIN = 1;
+SHARE_TYPE_LOSE = 2;
+ShareButton.prototype.onLogoClick = function () {
+    if (!this.sprite) return;
+    var that = this;
+    this.sprite.runAction(cc.Sequence.create(
+        cc.Spawn.create(cc.ScaleTo.create(0.2, 1.2 * that.initScale), cc.FadeIn.create(0.2)),
+        cc.ScaleTo.create(0.2, that.initScale),
+        cc.CallFunc.create(function () {
+            App.openShare(that.type);
+        })
+    ));
+};
+ShareButton.prototype.checkClick = function (x, y) {
+    if (this.sprite) {
+        var rect = this.sprite.getBoundingBox();
+        var pos = this.sprite.convertToWorldSpace(cc.p(0,0));
+        var i = rect.width;
+        var s = rect.height;
+        return x >= pos.x && x <= pos.x + i && y >= pos.y && y <= pos.y + s;
+    }
+    return false;
 };
 
 

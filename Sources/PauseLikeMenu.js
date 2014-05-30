@@ -25,6 +25,7 @@ var PauseLikeMenu = Menu.extend({
         root.addChild(menuNode);
         this.baseSprite = menuNode;
         this.moreGames = new MoreGamesButton(root, 90, limit(App.WIN_H * 0.15, 145, 280), 1);
+
     }
 });
 PauseLikeMenu.prototype.show = function () {
@@ -224,6 +225,9 @@ var LoseMenu = PauseLikeMenu.extend({
         }, this.baseSprite, 340, 57);
         this.animatedButtons.push(i);
         this.clickables.push(i);
+        //share
+        this.shareBtn = new ShareButton(this.sprite, App.GAME_W *0.7, limit(App.WIN_H * 0.16, 145, 280), 0.9, SHARE_TYPE_LOSE);
+        this.clickables.push(this.shareBtn);
     }
 });
 
@@ -364,7 +368,7 @@ var CreditsMenu = PauseLikeMenu.extend({
             t.onPlayDown()
         };
         this.clickables.push(o);
-        this.targetPos -= 120
+        this.targetPos -= 20
     }
 });
 CreditsMenu.prototype.show = function () {
